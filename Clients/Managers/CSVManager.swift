@@ -73,8 +73,44 @@ class CSVManager {
     }
 
     class func parseClients(csv: CSV) -> [Client] {
-        let clients: [Client] = []
-        //TODO implement import
+        var clients: [Client] = []
+        for clientData in csv.rows {
+            var contact = CNContact()
+            do {
+                let name = "\(clientData["First"]!) \(clientData["Last"]!)"
+                let predicate = CNContact.predicateForContactsMatchingName(name)
+                let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactIdentifierKey]
+                let contacts = try CNContactStore().unifiedContactsMatchingPredicate(predicate, keysToFetch: keysToFetch)
+                if (!contacts.isEmpty) {
+                    contact = contacts.first!
+                }
+                print("Imported contact \(contact.givenName) \(contact.familyName)")
+            } catch {
+                print("Unable to load a contact")
+            }
+            
+            var clientCategory: Category = Contract()
+            var first = true
+            
+            for category in categories {
+                for i in 0...category.sections.count - 1 {
+                    let value = clientData[category.sections[i].name]!
+                    if value != "N/A" {
+                        if first {
+                            switch category.categoryName {
+                            case "Consultation": clientCategory = Consultation()
+                            default: clientCategory = Contract()
+                            }
+                            first = false
+                        }
+                        clientCategory.sections[i].value = Double(value)!
+                    }
+                }
+            }
+
+            let client = Client(contact: contact, category: clientCategory, mileage: [], notes: clientData["Notes"]!, timestamp: NSDate())
+            clients.append(client)
+        }
         return clients
     }
 }

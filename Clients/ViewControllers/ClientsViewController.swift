@@ -167,6 +167,7 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
                 clients.append(client)
             }
         }
+        updatedClient()
     }
 }
 

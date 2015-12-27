@@ -22,7 +22,7 @@ class Client: NSObject, NSCoding {
         var contact = CNContact()
         do {
             let identifier = coder.decodeObjectForKey("contact") as! String
-            let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey, CNContactIdentifierKey]
+            let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactIdentifierKey]
             contact = try CNContactStore().unifiedContactWithIdentifier(identifier, keysToFetch: keysToFetch)
             print("Loaded contact \(contact.givenName) \(contact.familyName)")
         } catch {

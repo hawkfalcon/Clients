@@ -10,14 +10,14 @@ class iCloudManager {
             return
         }
         documentsURL = iCloudDocumentsURL
-        if !NSFileManager.defaultManager().fileExistsAtPath(iCloudDocumentsURL.path!, isDirectory: nil) {
-            return
+        if (!NSFileManager.defaultManager().fileExistsAtPath(iCloudDocumentsURL.path!, isDirectory: nil)) {
+            do {
+                try NSFileManager.defaultManager().createDirectoryAtURL(iCloudDocumentsURL, withIntermediateDirectories: true, attributes: nil)
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
         }
-        do {
-            try NSFileManager.defaultManager().createDirectoryAtURL(iCloudDocumentsURL, withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
+        
     }
 
     class func backupClientData(clients: [Client], type: String) -> NSURL {
