@@ -7,14 +7,10 @@ class NewMileageViewController: UITableViewController, UITextFieldDelegate {
 
     var mileage: Mileage!
 
-    override func prefersStatusBarHidden() -> Bool {
-        return true
-    }
-
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         var mileAmount = 0.0
         if let miles = Double(miles.text!) {
-           mileAmount = miles
+            mileAmount = miles
         }
         mileage = Mileage(miles: mileAmount, date: date.date)
     }

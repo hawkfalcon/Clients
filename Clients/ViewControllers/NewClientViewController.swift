@@ -5,7 +5,6 @@ import ContactsUI
 class NewClientViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CNContactPickerDelegate {
 
     @IBOutlet var done: UIBarButtonItem!
-    @IBOutlet var nav: UINavigationItem!
 
     @IBOutlet var tableView: UITableView!
 
@@ -25,13 +24,15 @@ class NewClientViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        done.setTitleTextAttributes([NSFontAttributeName: UIFont.boldSystemFontOfSize(16.0)], forState: UIControlState.Normal)
+
         if !newClient {
             for i in 0 ... categories.count - 1 {
                 if (client.category.categoryName == categories[i]) {
                     segment = i
                 }
             }
-            nav.title = "Edit Client"
+            self.title = "Edit Client"
         } else {
             client = Client(contact: CNContact(), category: categories[0], mileage: [], notes: "", timestamp: NSDate())
             done.enabled = false
@@ -49,11 +50,6 @@ class NewClientViewController: UIViewController, UITableViewDataSource, UITableV
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         tableView.endEditing(true)
     }
-
-    override func prefersStatusBarHidden() -> Bool {
-        return true
-    }
-
 
     // Setup layout
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -99,7 +95,7 @@ class NewClientViewController: UIViewController, UITableViewDataSource, UITableV
                 firstLoad = false
             }
             segmentControl.selectedSegmentIndex = segment
-            segmentControl.addTarget(self, action: "segmentAction:", forControlEvents: .ValueChanged)
+            segmentControl.addTarget(self, action: #selector(segmentAction), forControlEvents: .ValueChanged)
             return cell
         }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="13F-ED-h5t">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="13F-ED-h5t">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -110,7 +110,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="yn6-YP-hc8">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="e14-PI-661" kind="modal" id="HcH-z9-dki"/>
+                                <segue destination="6uo-FX-q9O" kind="modal" id="8uD-iZ-a1f"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -122,7 +122,23 @@
             </objects>
             <point key="canvasLocation" x="1266" y="340"/>
         </scene>
-        <!--New Client View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="qUS-3B-dE3">
+            <objects>
+                <navigationController id="6uo-FX-q9O" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="rJb-mn-CGP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="e14-PI-661" kind="relationship" relationship="rootViewController" id="WyH-zr-8ya"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r9f-xw-ilY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1746" y="560"/>
+        </scene>
+        <!--Add Client-->
         <scene sceneID="yjM-J1-jPN">
             <objects>
                 <tableViewController id="e14-PI-661" customClass="NewClientViewController" customModule="Clients" customModuleProvider="target" sceneMemberID="viewController">
@@ -131,29 +147,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" translucent="NO" id="Tnp-fu-ofz">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <items>
-                                <navigationItem title="Add Client" id="cqI-ju-IvX">
-                                    <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="hhU-Ts-rcl">
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <segue destination="IoY-Ph-Okc" kind="unwind" unwindAction="unwindToList:" id="4YR-Bq-lJy"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem key="rightBarButtonItem" systemItem="done" id="6qt-gf-76c">
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <segue destination="IoY-Ph-Okc" kind="unwind" unwindAction="unwindAndAddToList:" id="poO-dH-ndR"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </navigationItem>
-                            </items>
-                        </navigationBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NewCell" textLabel="5qb-ib-n3H" detailTextLabel="eUn-dR-S7A" rowHeight="55" style="IBUITableViewCellStyleValue1" id="iDw-ll-pcy" customClass="TextInputTableViewCell" customModule="Clients" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="93.5" width="320" height="55"/>
+                                <rect key="frame" x="0.0" y="113.5" width="320" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iDw-ll-pcy" id="Py2-Fn-Ooe">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="54.5"/>
@@ -191,7 +187,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SegmentCell" rowHeight="55" id="6D4-Lj-UJS" customClass="TextInputTableViewCell" customModule="Clients" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="148.5" width="320" height="55"/>
+                                <rect key="frame" x="0.0" y="168.5" width="320" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6D4-Lj-UJS" id="0DN-fM-E24">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="54.5"/>
@@ -219,17 +215,29 @@
                             <outlet property="delegate" destination="e14-PI-661" id="roo-hN-xI4"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Vnj-Dt-RAu"/>
+                    <navigationItem key="navigationItem" title="Add Client" id="H2a-vm-iCj">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="KhF-Ks-baX">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="IoY-Ph-Okc" kind="unwind" unwindAction="unwindToList:" id="4lI-AT-LZ9"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="D94-3T-vIN">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="IoY-Ph-Okc" kind="unwind" unwindAction="unwindAndAddToList:" id="jnA-sr-8Vv"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="done" destination="6qt-gf-76c" id="xiY-Wh-ua1"/>
-                        <outlet property="nav" destination="cqI-ju-IvX" id="wG2-aB-NOB"/>
+                        <outlet property="done" destination="D94-3T-vIN" id="rV0-SC-xSd"/>
                         <outlet property="tableView" destination="Xza-BE-xLa" id="U4X-va-yWp"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vmq-Iq-VVF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="IoY-Ph-Okc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1809" y="597"/>
+            <point key="canvasLocation" x="2128" y="560"/>
         </scene>
         <!--Name-->
         <scene sceneID="pdN-gQ-cNl">
@@ -276,7 +284,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="gv2-GX-R1G">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="e14-PI-661" kind="modal" identifier="toEdit" id="uk4-Z1-e8X"/>
+                                <segue destination="6uo-FX-q9O" kind="modal" identifier="toEdit" id="fx4-p9-CBa"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -333,7 +341,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="T5f-1i-zAc">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="7U5-Uz-xKM" kind="push" id="JIz-F9-i8t"/>
+                                <segue destination="KfM-IQ-33W" kind="modal" id="mt7-jk-cki"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -341,6 +349,23 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VHT-tk-ZSG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1682" y="1353"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Spb-vi-vWy">
+            <objects>
+                <navigationController id="KfM-IQ-33W" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="oFN-PS-QnZ"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ajl-7o-IEq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="7U5-Uz-xKM" kind="relationship" relationship="rootViewController" id="hea-hI-i1W"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9nY-OT-1gz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2074" y="1353"/>
         </scene>
         <!--Add Miles-->
         <scene sceneID="eXI-KK-m8Z">
@@ -440,7 +465,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TM5-HT-kF9" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="W5e-1u-2Uz" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2093" y="1360"/>
+            <point key="canvasLocation" x="2507" y="1353"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mCm-3v-AUD">
@@ -462,6 +487,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="HcH-z9-dki"/>
+        <segue reference="fx4-p9-CBa"/>
     </inferredMetricsTieBreakers>
 </document>

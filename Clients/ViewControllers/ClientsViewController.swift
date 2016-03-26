@@ -6,20 +6,20 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
 
     @IBOutlet var total: UILabel!
 
-    var clients: [Client] = []
+    var clients = [Client]()
 
     // Initialize data
     override func viewDidLoad() {
         super.viewDidLoad()
         iCloudManager.setup()
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let clientsData = defaults.objectForKey("clients") as? NSData {
-            clients = NSKeyedUnarchiver.unarchiveObjectWithData(clientsData) as! [Client]
+
+        if let data = NSKeyedUnarchiver.unarchiveObjectWithFile(Client.archive.path!) as? [Client] {
+            clients = data
             updateTotal()
         } else {
             //TODO help message
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "save:", name: "save", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(save), name: "save", object: nil)
     }
 
     // Setup layout
@@ -93,8 +93,11 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
     }
 
     func saveClientData() {
-        let clientsData = NSKeyedArchiver.archivedDataWithRootObject(clients)
-        NSUserDefaults.standardUserDefaults().setObject(clientsData, forKey: "clients")
+        guard NSKeyedArchiver.archiveRootObject(clients, toFile: Client.archive.path!)
+        else {
+            print("Failed to save clients")
+            return
+        }
     }
 
     // MARK Segues

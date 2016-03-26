@@ -88,12 +88,12 @@ class CSVManager {
             } catch {
                 print("Unable to load a contact")
             }
-            
+
             var clientCategory: Category = Contract()
             var first = true
-            
+
             for category in categories {
-                for i in 0...category.sections.count - 1 {
+                for i in 0 ... category.sections.count - 1 {
                     let value = clientData[category.sections[i].name]!
                     if value != "N/A" {
                         if first {

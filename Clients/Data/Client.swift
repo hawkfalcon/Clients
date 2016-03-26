@@ -10,6 +10,9 @@ class Client: NSObject, NSCoding {
 
     let timestamp: NSDate
 
+    static let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let archive = documentDirectory.URLByAppendingPathComponent("clients")
+
     init(contact: CNContact, category: Category, mileage: [Mileage], notes: String, timestamp: NSDate) {
         self.contact = contact
         self.category = category
@@ -22,7 +25,7 @@ class Client: NSObject, NSCoding {
         var contact = CNContact()
         do {
             let identifier = coder.decodeObjectForKey("contact") as! String
-            let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactIdentifierKey]
+            let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey, CNContactIdentifierKey]
             contact = try CNContactStore().unifiedContactWithIdentifier(identifier, keysToFetch: keysToFetch)
             print("Loaded contact \(contact.givenName) \(contact.familyName)")
         } catch {

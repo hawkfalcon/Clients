@@ -118,13 +118,17 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
 
     // Prepare to edit client or go to mileage
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if segue.identifier == "toEdit", let destination = segue.destinationViewController as? NewClientViewController {
-            destination.newClient = false
-            destination.client = client
-            destination.previous = client
-        } else if segue.identifier == "toMiles", let destination = segue.destinationViewController as? MileageTableViewController {
-            destination.mileage = client.mileage
-            destination.client = client
+        if let id = segue.identifier {
+            if id == "toEdit", let nav = segue.destinationViewController as? UINavigationController {
+                if let destination = nav.topViewController as? NewClientViewController {
+                    destination.newClient = false
+                    destination.client = client
+                    destination.previous = client
+                }
+            } else if id == "toMiles", let destination = segue.destinationViewController as? MileageTableViewController {
+                destination.mileage = client.mileage
+                destination.client = client
+            }
         }
     }
 }

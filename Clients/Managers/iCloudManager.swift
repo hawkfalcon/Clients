@@ -17,11 +17,13 @@ class iCloudManager {
                 print(error.localizedDescription)
             }
         }
-        
+
     }
 
     class func backupClientData(clients: [Client], type: String) -> NSURL {
-        if documentsURL == nil { return NSURL() }
+        if documentsURL == nil {
+            return NSURL()
+        }
         let content = CSVManager.getCSV(clients, type: type)
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd_HH_mm_ss"
