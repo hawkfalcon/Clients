@@ -2,9 +2,9 @@ import UIKit
 import Contacts
 import ContactsUI
 
-class ClientInfoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CNContactViewControllerDelegate {
+class ClientInfoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CNContactViewControllerDelegate, CNContactPickerDelegate {
 
-    let sections = ["Contact", "Payments", "Driving", "Other"]
+    var sections: [String] = []
 
     @IBOutlet var tableView: UITableView!
 
@@ -12,14 +12,16 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
 
     // Initialize
     override func viewWillAppear(animated: Bool) {
-        let name = client.contact.givenName + " " + client.contact.familyName
-        navigationItem.title = "\(name)"
-        //TODO generify
-        if client.category is Contract {
-            let owed = client.category.sections[0].value - client.category.totalValue()
-            let color = owed <= 0 ? UIColor.blackColor() : UIColor.redColor()
-            client.category.sections[3].color = color
+        var title = "New Contact"
+        if (client.contact.givenName != "") {
+            title = "\(client.contact.givenName) \(client.contact.familyName)"
         }
+        sections = ["Contact", "Categories", "Driving", "Other"]
+        for (category, _) in client.categories {
+            sections.insert(category, atIndex: 2)
+        }
+        navigationItem.title = title
+        tableView.reloadData()
     }
 
     override func viewDidLoad() {
@@ -35,100 +37,316 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if sections[section] == "Payments" {
-            return client.category.sections.count
+        if let category = client.categories[sections[section]] {
+            return category.payments.count + 2
         }
         return 1
     }
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
+        let category = sections[section]
+        if client.categories[category] != nil {
+            return nil
+        }
+        return category
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if (indexPath.section == 3) {
-            return 150.0;
+        switch sections[indexPath.section] {
+        case "Other":
+            return 150.0
+        case "Categories":
+            if client.categories.count == 0 {
+                return 55.0
+            }
+            return 0
+        case "Driving":
+            return 55.0
+        case "Contact":
+            return 55.0
+        default:
+            if indexPath.row == 0 {
+                return 25.0
+            }
+            return 55.0
         }
-        return 55.0
     }
 
     // Populate data
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell", forIndexPath: indexPath) as UITableViewCell
+        let section = sections[indexPath.section]
+        var cell: UITableViewCell
+        if client.categories[section] != nil {
+            cell = createPaymentCell(section, indexPath: indexPath)
+        }
+        else {
+            cell = createInfoCell(section, indexPath: indexPath)
+        }
+        
+        return cell
+    }
 
-        let section = indexPath.section
-        var text: String
-        var value: String
-        var color = UIColor.blackColor()
+    func createPaymentCell(section: String, indexPath: NSIndexPath) -> UITableViewCell {
+        let last = tableView.numberOfRowsInSection(indexPath.section) - 1
+        if indexPath.row == last {
+            let cell = tableView.dequeueReusableCellWithIdentifier("NewPaymentCell", forIndexPath: indexPath) as! NewPaymentTableViewCell
+            cell.configure()
+            return cell
+        }
+        else {
+            let category = client.categories[section]!
+            let cell = tableView.dequeueReusableCellWithIdentifier("PaymentCell", forIndexPath: indexPath) as! PaymentDataTableViewCell
+            cell.addTargets(self)
+            if indexPath.row == 0 {
+                let leftLabel = UILabel(frame: CGRectMake(0, 0, 5, 20))
+                leftLabel.text = "Total: "
+                leftLabel.sizeToFit()
+                cell.valueField.leftView = leftLabel
+                cell.valueField.leftViewMode = .UnlessEditing
+                
+                cell.paymentField.text = section
+                cell.paymentField.enabled = false
+                cell.valueField.text = "\(category.total)"
+                cell.backgroundColor = UIColor.lightTextColor()
+            } else {
+                let payment = category.payments[indexPath.row - 1]
+                cell.paymentField.text = payment.name
+                cell.valueField.text = "\(payment.value)"
+            }
+            return cell
+        }
+    }
+
+    func createInfoCell(section: String, indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell", forIndexPath: indexPath) as! TextInputTableViewCell
+        
+        var title = ""
+        var value = ""
+        cell.textField.enabled = false
         switch section {
-        case 0:
-            text = client.contact.givenName + " " + client.contact.familyName
-            value = "Go to Contacts"
-        case 2:
-            text = "Miles Driven"
+        case "Contact":
+            title = client.contact.givenName + " " + client.contact.familyName
+            if (title == " ") {
+                title = "Choose a Contact"
+            }
+            value = "Go to Contact"
+        case "Driving":
+            title = "Miles Driven"
             //TODO recalcuate on segue from Mileage
             var mileTotal: Double = 0.0
             for mile in client.mileage {
                 mileTotal += mile.miles
             }
             value = "\(mileTotal)"
-        case 3:
-            text = "Notes"
+        case "Other":
+            title = "Notes"
             value = client.notes
             cell.detailTextLabel?.lineBreakMode = .ByWordWrapping;
             cell.detailTextLabel?.numberOfLines = 0;
-
+            cell.textField.enabled = true
+        case "Categories":
+            if client.categories.count == 0 {
+                title = "Add a Category +"
+            }
         default:
-            let section = client.category.sections[indexPath.row]
-            text = section.name
-            color = section.color
-            value = "\(section.value)"
+            print("?")
         }
-
-        if section == 0 || section == 2 {
+        
+        if section == "Contact" || section == "Driving" {
             cell.selectionStyle = .Default
             cell.accessoryType = .DisclosureIndicator
         }
-        cell.textLabel?.text = text
+        else {
+            cell.accessoryType = .None
+            cell.selectionStyle = .None
+        }
+        
+        cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
-        cell.detailTextLabel?.textColor = color
-
+        
         return cell
     }
-
+    
+    func paymentFieldDidChange(textField: UITextField) {
+        textFieldDidChange(textField, isPayment: true)
+    }
+    
+    func valueFieldDidChange(textField: UITextField) {
+        textFieldDidChange(textField, isPayment: false)
+    }
+    
+    func textFieldDidChange(textField: UITextField, isPayment: Bool) {
+        if let cell = textField.superview?.superview as? UITableViewCell,
+            let indexPath = tableView.indexPathForCell(cell),
+            let category = client.categories[sections[indexPath.section]],
+            let text = textField.text {
+            if indexPath.row > 0 {
+                let payment = category.payments[indexPath.row - 1]
+                if isPayment {
+                    payment.name = text
+                }
+                else {
+                    if let value = Double(text) {
+                        payment.value = value
+                    }
+                }
+            }
+            else if !isPayment {
+                if let total = Double(text) {
+                    category.total = total
+                }
+            }
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let category = sections[section]
+        if client.categories[category] != nil || category == "Categories" {
+            return 0.0
+        }
+        return 18.0;
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let category = sections[section]
+        if client.categories[category] != nil {
+            return 0.0
+        }
+        else if category == "Contact" || category == "Driving" {
+            return 36.0
+        }
+        return 18.0;
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        let last = tableView.numberOfRowsInSection(indexPath.section) - 1
+        let category = sections[indexPath.section]
+        if client.categories[category] != nil && indexPath.row != last && indexPath.row != 0 {
+            return true
+        }
+        return false
+    }
+    
+    // Allow deletion
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            let category = sections[indexPath.section]
+            client.categories[category]?.payments.removeAtIndex(indexPath.row - 1)
+            NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
+    }
+    
     // Tapped on cell
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
-        if let text = cell?.detailTextLabel?.text where text == "Go to Contacts" {
-            do {
-                let contact = try CNContactStore().unifiedContactWithIdentifier(client.contact.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
-                let viewController = CNContactViewController(forContact: contact)
-                viewController.contactStore = CNContactStore()
-                viewController.delegate = self
-                self.navigationController?.pushViewController(viewController, animated: true)
-            } catch {
-                print("Can't load contact")
+        let cell = tableView.cellForRowAtIndexPath(indexPath)! as UITableViewCell
+        if let text = cell.detailTextLabel?.text where text == "Go to Contact" {
+            if (client.contact.givenName == "") {
+                showContactsPicker()
+            }
+            else {
+                loadContact()
             }
         }
-        if let text = cell?.textLabel?.text where text == "Miles Driven" {
+        else if let text = cell.textLabel?.text where text == "Miles Driven" {
             performSegueWithIdentifier("toMiles", sender: nil)
         }
+        else if cell is NewPaymentTableViewCell {
+            let category = client.categories[sections[indexPath.section]]
+            let payment = Payment(name: "Payment", value: 0.0, type: "", date: NSDate())
+            category?.payments.append(payment)
+            
+            tableView.beginUpdates()
+            tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            tableView.endUpdates()
+            
+            NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
+        }
+        else {
+            if let textCell = cell as? TextInputTableViewCell {
+                if textCell.textField != nil {
+                    textCell.textField.becomeFirstResponder()
+                }
+            }
+        }
     }
+
+    func loadContact() {
+        do {
+            let contact = try CNContactStore().unifiedContactWithIdentifier(client.contact.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
+            let viewController = CNContactViewController(forContact: contact)
+            viewController.contactStore = CNContactStore()
+            viewController.delegate = self
+            self.navigationController?.pushViewController(viewController, animated: true)
+        } catch {
+            print("Can't load contact")
+        }
+    }
+    
+    // Choose a contact
+    func showContactsPicker() {
+        let contactPicker = CNContactPickerViewController()
+        contactPicker.delegate = self;
+        // TODO: fix predicate
+        // let predicate = NSPredicate(format: "phoneNumbers.@count > 0")
+        // contactPicker.predicateForEnablingContact = predicate
+        self.presentViewController(contactPicker, animated: true, completion: nil)
+    }
+    
+    func contactPicker(picker: CNContactPickerViewController, didSelectContact contactSelected: CNContact) {
+        client.contact = contactSelected
+        let cell = tableView.cellForRowAtIndexPath(tableView.indexPathsForVisibleRows![0]) as! TextInputTableViewCell
+        let name = "\(contactSelected.givenName) \(contactSelected.familyName)"
+        cell.textLabel!.text = "\(name)"
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
+    }
+
+    // Setup reponse
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        tableView.endEditing(true)
+    }
+    
+    @IBAction func unwindAndAddCategory(segue: UIStoryboardSegue) {
+        let source = segue.sourceViewController as! NewCategoryViewController
+        let category = source.category
+        let name = source.name
+        client.categories[name] = category
+        print("\(name) \(category.total)")
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
+    }
+    
+    @IBAction func unwindToClient(segue: UIStoryboardSegue) {
+        //Cancelled
+    }
+
 
     // Prepare to edit client or go to mileage
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if let id = segue.identifier {
-            if id == "toEdit", let nav = segue.destinationViewController as? UINavigationController {
+            /*if id == "toEdit", let nav = segue.destinationViewController as? UINavigationController {
                 if let destination = nav.topViewController as? NewClientViewController {
                     destination.newClient = false
                     destination.client = client
                     destination.previous = client
                 }
-            } else if id == "toMiles", let destination = segue.destinationViewController as? MileageTableViewController {
+            } else */if id == "toMiles", let destination = segue.destinationViewController as? MileageTableViewController {
                 destination.mileage = client.mileage
                 destination.client = client
             }
+        }
+    }
+    
+    override func didMoveToParentViewController(parent: UIViewController?) {
+        if let clientsViewController = parent as? ClientsViewController {
+            clientsViewController.clients.append(client)
         }
     }
 }

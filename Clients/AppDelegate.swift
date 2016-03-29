@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(application: UIApplication) {
+        NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
     }
 
     func applicationDidEnterBackground(application: UIApplication) {

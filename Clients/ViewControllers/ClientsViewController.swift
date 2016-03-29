@@ -5,7 +5,10 @@ import SwiftCSV
 class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
 
     @IBOutlet var total: UILabel!
-
+    
+    static let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    let archive = documentDirectory.URLByAppendingPathComponent("clients")
+    
     var clients = [Client]()
 
     // Initialize data
@@ -13,13 +16,17 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
         super.viewDidLoad()
         iCloudManager.setup()
 
-        if let data = NSKeyedUnarchiver.unarchiveObjectWithFile(Client.archive.path!) as? [Client] {
+        if let data = NSKeyedUnarchiver.unarchiveObjectWithFile(archive.path!) as? [Client] {
             clients = data
             updateTotal()
         } else {
             //TODO help message
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(save), name: "save", object: nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.tableView.reloadData()
     }
 
     // Setup layout
@@ -41,7 +48,7 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
         coloredName.addAttribute(NSForegroundColorAttributeName, value: UIColor.grayColor(), range: NSRange(location: startPos, length: name.characters.count - startPos))
 
         cell.textLabel?.attributedText = coloredName
-        cell.detailTextLabel?.attributedText = client.category.displayedValue()
+        //cell.detailTextLabel?.attributedText = client.category.displayedValue()
 
         return cell
     }
@@ -64,13 +71,13 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
 
     // Sort and refresh data
     func updatedClient() {
-        self.clients.sortInPlace {
+        /*self.clients.sortInPlace {
             if $0.category.importance() == $1.category.importance() {
                 return $0.contact.familyName < $1.contact.familyName
             }
             return $0.category.importance() > $1.category.importance()
-        }
-        self.tableView.reloadData()
+        }*/
+        tableView.reloadData()
         saveAndUpdateTotal()
     }
 
@@ -83,7 +90,9 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
     func updateTotal() {
         var totalincome: Double = 0.0
         for client in clients {
-            totalincome += client.category.totalValue()
+            for (_, category) in client.categories {
+                totalincome += category.total
+            }
         }
         total.text = "$\(totalincome)"
     }
@@ -93,7 +102,7 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
     }
 
     func saveClientData() {
-        guard NSKeyedArchiver.archiveRootObject(clients, toFile: Client.archive.path!)
+        guard NSKeyedArchiver.archiveRootObject(clients, toFile: archive.path!)
         else {
             print("Failed to save clients")
             return
@@ -103,26 +112,18 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
     // MARK Segues
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if segue.identifier == "clientInfo", let destination = segue.destinationViewController as? ClientInfoViewController, index = tableView.indexPathForSelectedRow?.row {
-            destination.client = clients[index]
-        }
-    }
-
-    @IBAction func unwindAndAddToList(segue: UIStoryboardSegue) {
-        let source = segue.sourceViewController as! NewClientViewController
-        let client: Client = source.client
-
-        if source.newClient == false {
-            if let previous = source.previous, index = clients.indexOf(previous) {
-                clients.removeAtIndex(index)
+        if let id = segue.identifier where id.hasPrefix("client"), let destination = segue.destinationViewController as? ClientInfoViewController {
+            if segue.identifier == "clientInfo" {
+                if let index = tableView.indexPathForSelectedRow?.row {
+                    destination.client = clients[index]
+                }
+            }
+            else if segue.identifier == "clientCreation" {
+                let client = Client(contact: CNContact(), categories: [:], mileage: [], notes: "", timestamp: NSDate())
+                self.clients.append(client)
+                destination.client = self.clients.last
             }
         }
-        self.clients.append(client)
-        updatedClient()
-    }
-
-    @IBAction func unwindToList(segue: UIStoryboardSegue) {
-        //Cancelled
     }
 
     // Export data

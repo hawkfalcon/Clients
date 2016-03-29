@@ -3,7 +3,6 @@ import Contacts
 import SwiftCSV
 
 class CSVManager {
-    static let categories = [Contract(), Consultation()]
     static let types = ["Clients", "Mileage"]
 
     class func getCSV(client: [Client], type: String) -> NSString {
@@ -32,7 +31,7 @@ class CSVManager {
     }
 
     private class func getClientsCSV(clients: [Client]) -> NSString {
-        var data = "Last,First,Phone,Email,"
+        /*var data = "Last,First,Phone,Email,"
         for category in categories {
             for section in category.sections {
                 data += "\(section.name),"
@@ -69,11 +68,12 @@ class CSVManager {
             let date = formatter.stringFromDate(client.timestamp)
             data += "\(client.notes),\(date)\n"
         }
-        return NSString(string: data)
+        return NSString(string: data)*/
+        return NSString(string: "")
     }
 
     class func parseClients(csv: CSV) -> [Client] {
-        var clients: [Client] = []
+        //var clients: [Client] = []
         for clientData in csv.rows {
             var contact = CNContact()
             do {
@@ -88,7 +88,7 @@ class CSVManager {
             } catch {
                 print("Unable to load a contact")
             }
-
+/*
             var clientCategory: Category = Contract()
             var first = true
 
@@ -109,8 +109,8 @@ class CSVManager {
             }
 
             let client = Client(contact: contact, category: clientCategory, mileage: [], notes: clientData["Notes"]!, timestamp: NSDate())
-            clients.append(client)
+            clients.append(client)*/
         }
-        return clients
+        return []
     }
 }

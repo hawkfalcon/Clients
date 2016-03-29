@@ -2,20 +2,16 @@ import Contacts
 
 class Client: NSObject, NSCoding {
     var contact: CNContact
-    var category: Category
+    
+    var categories: [String:Category]
 
     var mileage: [Mileage]
-
     var notes: String
-
     let timestamp: NSDate
 
-    static let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-    static let archive = documentDirectory.URLByAppendingPathComponent("clients")
-
-    init(contact: CNContact, category: Category, mileage: [Mileage], notes: String, timestamp: NSDate) {
+    init(contact: CNContact, categories: [String:Category], mileage: [Mileage], notes: String, timestamp: NSDate) {
         self.contact = contact
-        self.category = category
+        self.categories = categories
         self.timestamp = timestamp
         self.notes = notes
         self.mileage = mileage
@@ -32,7 +28,7 @@ class Client: NSObject, NSCoding {
             print("Unable to load a contact")
         }
         self.contact = contact
-        self.category = coder.decodeObjectForKey("category") as! Category
+        self.categories = coder.decodeObjectForKey("categories") as! [String:Category]
         self.mileage = coder.decodeObjectForKey("mileage") as! [Mileage]
         self.notes = coder.decodeObjectForKey("notes") as! String
         self.timestamp = coder.decodeObjectForKey("timestamp") as! NSDate
@@ -42,7 +38,7 @@ class Client: NSObject, NSCoding {
 
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(self.contact.identifier, forKey: "contact")
-        coder.encodeObject(self.category, forKey: "category")
+        coder.encodeObject(self.categories, forKey: "categories")
         coder.encodeObject(self.mileage, forKey: "mileage")
         coder.encodeObject(self.notes, forKey: "notes")
         coder.encodeObject(self.timestamp, forKey: "timestamp")
