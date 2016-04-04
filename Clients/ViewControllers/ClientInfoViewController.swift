@@ -4,7 +4,9 @@ import ContactsUI
 
 class ClientInfoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CNContactViewControllerDelegate, CNContactPickerDelegate {
 
-    var sections: [String] = []
+    var sections = [String]()
+    
+    var expanded = [String:Int]()
 
     @IBOutlet var tableView: UITableView!
 
@@ -52,7 +54,8 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch sections[indexPath.section] {
+        let section = sections[indexPath.section]
+        switch section {
         case "Other":
             return 150.0
         case "Categories":
@@ -67,6 +70,9 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
         default:
             if indexPath.row == 0 {
                 return 25.0
+            }
+            else if expanded[section] == indexPath.row {
+                return 110.0
             }
             return 55.0
         }
@@ -96,7 +102,6 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
         else {
             let category = client.categories[section]!
             let cell = tableView.dequeueReusableCellWithIdentifier("PaymentCell", forIndexPath: indexPath) as! PaymentDataTableViewCell
-            cell.addTargets(self)
             if indexPath.row == 0 {
                 let leftLabel = UILabel(frame: CGRectMake(0, 0, 5, 20))
                 leftLabel.text = "Total: "
@@ -109,9 +114,13 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
                 cell.valueField.text = "\(category.total)"
                 cell.backgroundColor = UIColor.lightTextColor()
             } else {
+                if expanded[section] == indexPath.row {
+                    //
+                }
                 let payment = category.payments[indexPath.row - 1]
                 cell.paymentField.text = payment.name
                 cell.valueField.text = "\(payment.value)"
+                cell.addTargets(self)
             }
             return cell
         }
@@ -180,9 +189,11 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
             let indexPath = tableView.indexPathForCell(cell),
             let category = client.categories[sections[indexPath.section]],
             let text = textField.text {
+            print(text)
             if indexPath.row > 0 {
                 let payment = category.payments[indexPath.row - 1]
                 if isPayment {
+                    print(payment.name + " " + text)
                     payment.name = text
                 }
                 else {
@@ -239,6 +250,7 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
     
     // Tapped on cell
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let section = sections[indexPath.section]
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let cell = tableView.cellForRowAtIndexPath(indexPath)! as UITableViewCell
         if let text = cell.detailTextLabel?.text where text == "Go to Contact" {
@@ -253,15 +265,26 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
             performSegueWithIdentifier("toMiles", sender: nil)
         }
         else if cell is NewPaymentTableViewCell {
-            let category = client.categories[sections[indexPath.section]]
+            let category = client.categories[section]
             let payment = Payment(name: "Payment", value: 0.0, type: "", date: NSDate())
             category?.payments.append(payment)
+            expanded[section] = indexPath.row
             
             tableView.beginUpdates()
             tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             tableView.endUpdates()
             
             NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
+        } else if cell is PaymentDataTableViewCell {
+            if expanded[section] == nil {
+                expanded = [:]
+                expanded[section] = indexPath.row
+            }
+            else {
+                expanded = [:]
+            }
+            tableView.beginUpdates()
+            tableView.endUpdates()
         }
         else {
             if let textCell = cell as? TextInputTableViewCell {
@@ -331,13 +354,7 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
     // Prepare to edit client or go to mileage
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if let id = segue.identifier {
-            /*if id == "toEdit", let nav = segue.destinationViewController as? UINavigationController {
-                if let destination = nav.topViewController as? NewClientViewController {
-                    destination.newClient = false
-                    destination.client = client
-                    destination.previous = client
-                }
-            } else */if id == "toMiles", let destination = segue.destinationViewController as? MileageTableViewController {
+            if id == "toMiles", let destination = segue.destinationViewController as? MileageTableViewController {
                 destination.mileage = client.mileage
                 destination.client = client
             }

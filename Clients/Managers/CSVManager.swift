@@ -31,45 +31,43 @@ class CSVManager {
     }
 
     private class func getClientsCSV(clients: [Client]) -> NSString {
-        /*var data = "Last,First,Phone,Email,"
-        for category in categories {
-            for section in category.sections {
-                data += "\(section.name),"
-            }
-        }
-        data += "Notes,Timestamp\n"
+        var data = "Last,First,Phone,Email,Notes,Timestamp,Payments\n"
         for client in clients {
             data += "\(client.contact.familyName),"
             data += "\(client.contact.givenName),"
             if let phone = client.contact.phoneNumbers.first {
                 let phoneNumber = phone.value as! CNPhoneNumber
                 data += "\(phoneNumber.stringValue),"
-            } else {
+            }
+            else {
                 data += "None,"
             }
             if let email = client.contact.emailAddresses.first {
                 data += "\(email.value),"
-            } else {
+            }
+            else {
                 data += "None,"
-            }
-            //TODO generify
-            if client.category is Consultation {
-                data += "N/A,N/A,N/A,N/A,"
-            }
-            for section in client.category.sections {
-                data += "\(section.value),"
-            }
-            //TODO generify
-            if client.category is Contract {
-                data += "N/A,N/A,"
             }
             let formatter = NSDateFormatter()
             formatter.dateFormat = "MM/dd/yyyy"
             let date = formatter.stringFromDate(client.timestamp)
-            data += "\(client.notes),\(date)\n"
+            data += "\(client.notes),\(date),"
+
+            for name in client.categories.keys {
+                if let category = client.categories[name] {
+                    data += "\(name),"
+                    for payment in category.payments {
+                        data += "\(payment.name): "
+                        data += "\(payment.value) - "
+                        data += "\(formatter.stringFromDate(payment.date)) - "
+                        data += "\(payment.type),"
+                    }
+                }
+            }
+            data += "\n"
         }
-        return NSString(string: data)*/
-        return NSString(string: "")
+        
+        return NSString(string: data)
     }
 
     class func parseClients(csv: CSV) -> [Client] {
