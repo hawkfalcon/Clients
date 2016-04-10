@@ -43,6 +43,26 @@ class Client: NSObject, NSCoding {
         coder.encodeObject(self.notes, forKey: "notes")
         coder.encodeObject(self.timestamp, forKey: "timestamp")
     }
+    
+    func owed() -> Double {
+        var owed = 0.0
+        for category in categories.values {
+            owed += category.owed()
+        }
+        return owed
+    }
+    
+    func paid() -> Double {
+        var paid = 0.0
+        for category in categories.values {
+            paid += category.paid()
+        }
+        return paid
+    }
+    
+    func complete() -> Bool {
+        return owed() == 0.0
+    }
 }
 
 func ==(lhs: Client, rhs: Client) -> Bool {

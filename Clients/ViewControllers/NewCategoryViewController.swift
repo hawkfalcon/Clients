@@ -11,7 +11,7 @@ class NewCategoryViewController: UIViewController, UITableViewDataSource, UITabl
     var category: Category!
     var name: String = ""
     
-    let defaults = ["Contract", "Consultation", "Time and Materials", "Plan", "Custom"]
+    let defaults = ["Contract", "Consultation", "Time and Materials", "Other"]
     let sections = ["Total Amount", "Category Name"]
     
     // Initialize

@@ -2,11 +2,11 @@ import UIKit
 import Contacts
 import ContactsUI
 
-class ClientInfoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CNContactViewControllerDelegate, CNContactPickerDelegate {
+class ClientInfoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, CNContactViewControllerDelegate, CNContactPickerDelegate {
 
     var sections = [String]()
     
-    var expanded = [String:Int]()
+    //var expanded = [String:Int]()
 
     @IBOutlet var tableView: UITableView!
 
@@ -69,11 +69,11 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
             return 55.0
         default:
             if indexPath.row == 0 {
-                return 25.0
+                return 35.0
             }
-            else if expanded[section] == indexPath.row {
-                return 110.0
-            }
+            /*else if expanded[section] == indexPath.row {
+                return 330.0
+            }*/
             return 55.0
         }
     }
@@ -103,25 +103,34 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
             let category = client.categories[section]!
             let cell = tableView.dequeueReusableCellWithIdentifier("PaymentCell", forIndexPath: indexPath) as! PaymentDataTableViewCell
             if indexPath.row == 0 {
-                let leftLabel = UILabel(frame: CGRectMake(0, 0, 5, 20))
+                let leftLabel = UILabel()
                 leftLabel.text = "Total: "
+                leftLabel.textAlignment = .Right
                 leftLabel.sizeToFit()
                 cell.valueField.leftView = leftLabel
                 cell.valueField.leftViewMode = .UnlessEditing
                 
                 cell.paymentField.text = section
                 cell.paymentField.enabled = false
-                cell.valueField.text = "\(category.total)"
+                cell.valueField.text = "\(category.total.currency)"
+                
                 cell.backgroundColor = UIColor.lightTextColor()
+                
+                cell.selectionStyle = .None
+                cell.accessoryType = .None
             } else {
-                if expanded[section] == indexPath.row {
+                /*if expanded[section] == indexPath.row {
                     //
-                }
+                }*/
                 let payment = category.payments[indexPath.row - 1]
+                
                 cell.paymentField.text = payment.name
-                cell.valueField.text = "\(payment.value)"
-                cell.addTargets(self)
+                cell.valueField.text = "\(payment.value.currency)"
+                cell.valueField.enabled = false
+                
+                //cell.typeField.text = "\(payment.type)"
             }
+            cell.addTargets(self)
             return cell
         }
     }
@@ -176,36 +185,32 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
         return cell
     }
     
-    func paymentFieldDidChange(textField: UITextField) {
-        textFieldDidChange(textField, isPayment: true)
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        return range.length < 1 || range.location + range.length > 1
     }
     
-    func valueFieldDidChange(textField: UITextField) {
-        textFieldDidChange(textField, isPayment: false)
-    }
-    
-    func textFieldDidChange(textField: UITextField, isPayment: Bool) {
-        if let cell = textField.superview?.superview as? UITableViewCell,
+    func fieldDidChange(textField: UITextField) {
+        if let name = textField.placeholder, let cell = textField.superview?.superview as? UITableViewCell,
             let indexPath = tableView.indexPathForCell(cell),
             let category = client.categories[sections[indexPath.section]],
             let text = textField.text {
-            print(text)
             if indexPath.row > 0 {
                 let payment = category.payments[indexPath.row - 1]
-                if isPayment {
-                    print(payment.name + " " + text)
+                switch name {
+                case "Name":
                     payment.name = text
-                }
-                else {
-                    if let value = Double(text) {
+                case "Value":
+                    if let value = text.rawDouble {
                         payment.value = value
                     }
+                case "Type":
+                    payment.type = text
+                default:
+                    print("?")
                 }
             }
-            else if !isPayment {
-                if let total = Double(text) {
-                    category.total = total
-                }
+            else if let value = text.rawDouble where indexPath.row == 0 {
+                category.total = value
             }
         }
     }
@@ -213,7 +218,7 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let category = sections[section]
         if client.categories[category] != nil || category == "Categories" {
-            return 0.0
+            return 0.0001
         }
         return 18.0;
     }
@@ -221,7 +226,7 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let category = sections[section]
         if client.categories[category] != nil {
-            return 0.0
+            return 0.0001
         }
         else if category == "Contact" || category == "Driving" {
             return 36.0
@@ -268,14 +273,14 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
             let category = client.categories[section]
             let payment = Payment(name: "Payment", value: 0.0, type: "", date: NSDate())
             category?.payments.append(payment)
-            expanded[section] = indexPath.row
+            //expanded[section] = indexPath.row
             
             tableView.beginUpdates()
             tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             tableView.endUpdates()
             
             NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
-        } else if cell is PaymentDataTableViewCell {
+        }/* else if cell is PaymentDataTableViewCell {
             if expanded[section] == nil {
                 expanded = [:]
                 expanded[section] = indexPath.row
@@ -285,7 +290,7 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
             }
             tableView.beginUpdates()
             tableView.endUpdates()
-        }
+        }*/
         else {
             if let textCell = cell as? TextInputTableViewCell {
                 if textCell.textField != nil {
@@ -332,6 +337,12 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
         return false
     }
     
+    func textFieldDidEndEditing(textField: UITextField) {
+        if let money = textField.text?.rawDouble {
+            textField.text = money.currency
+        }
+    }
+    
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         tableView.endEditing(true)
     }
@@ -341,7 +352,6 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
         let category = source.category
         let name = source.name
         client.categories[name] = category
-        print("\(name) \(category.total)")
         
         NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
     }
@@ -358,12 +368,33 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
                 destination.mileage = client.mileage
                 destination.client = client
             }
+            else if id == "toPayment", let destination = segue.destinationViewController as? PaymentInfoViewController {
+                if let index = tableView.indexPathForSelectedRow {
+                    let section = sections[index.section]
+                    destination.payment = client.categories[section]?.payments[index.row - 1]
+                }
+            }
         }
     }
     
-    override func didMoveToParentViewController(parent: UIViewController?) {
+    /*override func didMoveToParentViewController(parent: UIViewController?) {
         if let clientsViewController = parent as? ClientsViewController {
             clientsViewController.clients.append(client)
         }
+    }*/
+}
+
+extension Double {
+    var currency:String {
+        let formatter = NSNumberFormatter()
+        formatter.numberStyle = .CurrencyStyle
+        return formatter.stringFromNumber(self)!
+    }
+}
+
+extension String {
+    var rawDouble:Double? {
+        let raw = self.stringByReplacingOccurrencesOfString("$", withString: "")
+        return Double(raw)
     }
 }

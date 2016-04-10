@@ -25,12 +25,12 @@ class Category: NSObject, NSCoding {
         return owed
     }
     
-    func received() -> Double {
-        var received = 0.0
+    func paid() -> Double {
+        var paid = 0.0
         for payment in payments {
-            received += payment.value
+            paid += payment.value
         }
-        return received
+        return paid
     }
 
     func encodeWithCoder(coder: NSCoder) {

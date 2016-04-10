@@ -26,7 +26,7 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.tableView.reloadData()
+        self.updatedClient()
     }
 
     // Setup layout
@@ -37,6 +37,37 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return clients.count
     }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 45.0
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerFrame = tableView.frame
+
+        let view = UIView(frame: CGRectMake(0, 0, headerFrame.size.width, headerFrame.size.height))
+        let left = UILabel(frame: CGRectMake(15, 10, 300, 40))
+        let right = UILabel(frame: CGRectMake(40, 10, 300, 40))
+        
+        //left.font = UIFont.systemFontOfSize(14.0)
+        left.backgroundColor = UIColor.clearColor()
+        left.textColor = UIColor.orangeColor()
+        left.text = "Name"
+        
+        right.text = "Paid  Owed"
+        right.textColor = UIColor.grayColor()
+        right.textAlignment = .Right
+        right.backgroundColor = UIColor.clearColor()
+        
+        view.addSubview(left)
+        view.addSubview(right)
+        
+        return view
+    }
+    
+    /*override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Name"
+    }*/
 
     // Populate data
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -48,7 +79,13 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
         coloredName.addAttribute(NSForegroundColorAttributeName, value: UIColor.grayColor(), range: NSRange(location: startPos, length: name.characters.count - startPos))
 
         cell.textLabel?.attributedText = coloredName
-        //cell.detailTextLabel?.attributedText = client.category.displayedValue()
+        
+        let amount = "\(client.paid())    \(client.owed())"
+        let attributedAmount = NSMutableAttributedString(string: amount)
+        let start = "\(client.owed())".characters.count + 1
+        let color = client.complete() ? UIColor.blackColor() : UIColor.redColor()
+        attributedAmount.addAttribute(NSForegroundColorAttributeName, value: color, range: NSRange(location: start, length: amount.characters.count - start))
+        cell.detailTextLabel?.attributedText = attributedAmount
 
         return cell
     }
@@ -71,14 +108,14 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
 
     // Sort and refresh data
     func updatedClient() {
-        /*self.clients.sortInPlace {
-            if $0.category.importance() == $1.category.importance() {
+        self.clients.sortInPlace {
+            if $0.complete() == $1.complete() {
                 return $0.contact.familyName < $1.contact.familyName
             }
-            return $0.category.importance() > $1.category.importance()
-        }*/
+            return !$0.complete() && $1.complete()
+        }
         tableView.reloadData()
-        saveAndUpdateTotal()
+        updateTotal()
     }
 
     func saveAndUpdateTotal() {
