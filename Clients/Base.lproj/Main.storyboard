@@ -256,7 +256,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PaymentCell" textLabel="loV-bp-7Ng" detailTextLabel="kOM-6C-Xjc" rowHeight="55" style="IBUITableViewCellStyleValue1" id="1Sg-jU-Ybl" userLabel="PaymentCell" customClass="PaymentDataTableViewCell" customModule="Clients" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="169" width="320" height="55"/>
+                                <rect key="frame" x="0.0" y="168.5" width="320" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Sg-jU-Ybl" id="I4c-qt-Hsj">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="54.5"/>
@@ -609,7 +609,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PaymentCell" textLabel="JPL-Hw-T0D" detailTextLabel="Alx-bA-FZG" rowHeight="55" style="IBUITableViewCellStyleValue1" id="EJ2-o9-259" userLabel="TypeCell" customClass="PaymentDataTableViewCell" customModule="Clients" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="169" width="320" height="55"/>
+                                        <rect key="frame" x="0.0" y="168.5" width="320" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EJ2-o9-259" id="iYb-MW-sVu">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="54.5"/>

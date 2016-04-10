@@ -18,6 +18,16 @@ class PaymentInfoViewController: UITableViewController, UITextFieldDelegate {
         value.text = payment.value.currency
         type.text = payment.type
         
+        value.addTarget(self, action: #selector(fieldDidChange), forControlEvents: .EditingChanged)
+        name.addTarget(self, action: #selector(fieldDidChange), forControlEvents: .EditingChanged)
+        type.addTarget(self, action: #selector(fieldDidChange), forControlEvents: .EditingChanged)
+        
+        date.addTarget(self, action: #selector(dateDidChange), forControlEvents: .ValueChanged)
+        
+        value.delegate = self
+        name.delegate = self
+        type.delegate = self
+        
         tableView.reloadData()
     }
 
@@ -28,14 +38,45 @@ class PaymentInfoViewController: UITableViewController, UITextFieldDelegate {
         tableView.dataSource = self
     }
     
+    func fieldDidChange(textField: UITextField) {
+        if let placeholder = textField.placeholder {
+            switch placeholder {
+            case "Name":
+                if let paymentName = name.text {
+                    payment.name = paymentName
+                    navigationItem.title = paymentName
+                }
+            case "Value":
+                if let paymentValue = value.text, let rawValue = paymentValue.rawDouble {
+                    payment.value = rawValue
+                }
+            case "Type":
+                if let paymentType = type.text {
+                    payment.type = paymentType
+                }
+            default:
+                print("?")
+            }
+        }
+    }
     
+    func dateDidChange(datePicker: UIDatePicker) {
+        payment.date = datePicker.date
+    }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        print("TEST")
-        /*var mileAmount = 0.0
-        if let miles = Double(miles.text!) {
-            mileAmount = miles
-        }*/
-        //mileage = Mileage(miles: mileAmount, date: date.date)
+    // Setup reponse
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        if let money = textField.text?.rawDouble {
+            textField.text = money.currency
+        }
+    }
+    
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        tableView.endEditing(true)
     }
 }
