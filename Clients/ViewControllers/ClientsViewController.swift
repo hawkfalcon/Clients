@@ -47,14 +47,16 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
 
         let view = UIView(frame: CGRectMake(0, 0, headerFrame.size.width, headerFrame.size.height))
         let left = UILabel(frame: CGRectMake(15, 10, 300, 40))
-        let right = UILabel(frame: CGRectMake(40, 10, 300, 40))
-        
+        let right = UILabel()
+        if let navigationBar = self.navigationController?.navigationBar {
+            right.frame = CGRect(x: navigationBar.frame.width/2 - 35, y: 10, width: navigationBar.frame.width/2, height: navigationBar.frame.height)
+        }
         //left.font = UIFont.systemFontOfSize(14.0)
         left.backgroundColor = UIColor.clearColor()
         left.textColor = UIColor.orangeColor()
         left.text = "Name"
         
-        right.text = "Paid  Owed"
+        right.text = "Paid          Owed"
         right.textColor = UIColor.grayColor()
         right.textAlignment = .Right
         right.backgroundColor = UIColor.clearColor()
@@ -64,30 +66,26 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
         
         return view
     }
-    
-    /*override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Name"
-    }*/
 
     // Populate data
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ClientCell")! as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("ClientCell") as? ClientDataTableViewCell
         let client = clients[indexPath.row]
         let name = "\(client.contact.familyName) \(client.contact.givenName)".trunc(18)
         let coloredName = NSMutableAttributedString(string: name)
-        let startPos = client.contact.familyName.characters.count + 1
+        let length = client.contact.familyName.characters.count + 1
+        let startPos = length < 18 ? length : 18
         coloredName.addAttribute(NSForegroundColorAttributeName, value: UIColor.grayColor(), range: NSRange(location: startPos, length: name.characters.count - startPos))
 
-        cell.textLabel?.attributedText = coloredName
+        cell?.nameLabel.attributedText = coloredName
         
-        let amount = "\(client.paid())    \(client.owed())"
-        let attributedAmount = NSMutableAttributedString(string: amount)
-        let start = "\(client.owed())".characters.count + 1
+        cell?.paidLabel.text = "\(client.paid().currency)"
+        
         let color = client.complete() ? UIColor.blackColor() : UIColor.redColor()
-        attributedAmount.addAttribute(NSForegroundColorAttributeName, value: color, range: NSRange(location: start, length: amount.characters.count - start))
-        cell.detailTextLabel?.attributedText = attributedAmount
+        cell?.owedLabel.textColor = color
+        cell?.owedLabel.text = "\(client.owed().currency)"
 
-        return cell
+        return cell!
     }
 
 
@@ -131,7 +129,7 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
                 totalincome += category.total
             }
         }
-        total.text = "$\(totalincome)"
+        total.text = "\(totalincome.currency)"
     }
 
     func save(notification: NSNotification) {

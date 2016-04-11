@@ -111,6 +111,7 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
                 cell.valueField.leftViewMode = .UnlessEditing
                 
                 cell.paymentField.text = section
+                cell.paymentField.enabled = false
 
                 cell.valueField.text = "\(category.total.currency)"
                 
@@ -124,8 +125,6 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
                 cell.paymentField.text = payment.name
                 cell.valueField.text = "\(payment.value.currency)"
                 cell.valueField.enabled = false
-                
-                //cell.typeField.text = "\(payment.type)"
             }
             cell.addTargets(self)
             return cell
@@ -159,6 +158,7 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
             cell.detailTextLabel?.lineBreakMode = .ByWordWrapping;
             cell.detailTextLabel?.numberOfLines = 0;
             cell.textField.enabled = true
+            cell.textField.keyboardType = .Default
         case "Categories":
             if client.categories.count == 0 {
                 title = "Add a Category +"
@@ -193,21 +193,17 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
             let text = textField.text {
             if indexPath.row > 0 {
                 let payment = category.payments[indexPath.row - 1]
-                switch name {
-                case "Name":
+                if name == "Name" {
                     payment.name = text
-                case "Value":
-                    if let value = text.rawDouble {
-                        payment.value = value
-                    }
-                case "Type":
-                    payment.type = text
-                default:
-                    print("?")
+                }
+                else if let value = text.rawDouble {
+                    payment.value = value
                 }
             }
-            else if let value = text.rawDouble where indexPath.row == 0 {
-                category.total = value
+            else {
+                if let value = text.rawDouble {
+                    category.total = value
+                }
             }
         }
     }
@@ -242,7 +238,7 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         let last = tableView.numberOfRowsInSection(indexPath.section) - 1
         let category = sections[indexPath.section]
-        if client.categories[category] != nil && indexPath.row != last && indexPath.row != 0 {
+        if client.categories[category] != nil && indexPath.row != last {// && indexPath.row != 0 {
             return true
         }
         return false
@@ -252,9 +248,18 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             let category = sections[indexPath.section]
-            client.categories[category]?.payments.removeAtIndex(indexPath.row - 1)
+            tableView.beginUpdates()
+            if indexPath.row == 0 {
+                client.categories[category] = nil
+                sections.removeAtIndex(indexPath.section)
+                tableView.deleteSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Automatic)
+            }
+            else {
+                client.categories[category]?.payments.removeAtIndex(indexPath.row - 1)
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            }
             NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            tableView.endUpdates()
         }
     }
     
@@ -274,6 +279,9 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
         else if let text = cell.textLabel?.text where text == "Miles Driven" {
             performSegueWithIdentifier("toMiles", sender: nil)
         }
+        else if let text = cell.textLabel?.text where text == "Add a Category +" {
+            performSegueWithIdentifier("addCategory", sender: nil)
+        }
         else if cell is NewPaymentTableViewCell {
             let category = client.categories[section]
             let payment = Payment(name: "Payment", value: 0.0, type: "", date: NSDate())
@@ -283,6 +291,9 @@ class ClientInfoViewController: UIViewController, UITableViewDataSource, UITable
             tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             tableView.endUpdates()
             
+            tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .None)
+            self.performSegueWithIdentifier("toPayment", sender: self)
+
             NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
         }
         else {

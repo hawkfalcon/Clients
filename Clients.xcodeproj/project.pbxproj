@@ -18,6 +18,7 @@
 		546B9EC61CBB0514001004F5 /* PaymentInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546B9EC51CBB0514001004F5 /* PaymentInfoViewController.swift */; };
 		547A8A691AC4E5F400CC4DB6 /* ClientsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A8A681AC4E5F400CC4DB6 /* ClientsViewController.swift */; };
 		547A8A6B1AC4E73D00CC4DB6 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A8A6A1AC4E73D00CC4DB6 /* Client.swift */; };
+		54A956911CBB27490030E010 /* ClientDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A956901CBB27490030E010 /* ClientDataTableViewCell.swift */; };
 		54C2A2661B45BDD600271412 /* MileageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C2A2651B45BDD600271412 /* MileageTableViewController.swift */; };
 		54C2A2681B45C33800271412 /* NewMileageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C2A2671B45C33800271412 /* NewMileageViewController.swift */; };
 		54DE51D81B45EA72008A2570 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54DE51D61B45EA72008A2570 /* Main.storyboard */; };
@@ -52,6 +53,7 @@
 		546B9EC51CBB0514001004F5 /* PaymentInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentInfoViewController.swift; sourceTree = "<group>"; };
 		547A8A681AC4E5F400CC4DB6 /* ClientsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientsViewController.swift; sourceTree = "<group>"; };
 		547A8A6A1AC4E73D00CC4DB6 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		54A956901CBB27490030E010 /* ClientDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientDataTableViewCell.swift; sourceTree = "<group>"; };
 		54B3418C1C2F75440025D151 /* Clients.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Clients.entitlements; sourceTree = "<group>"; };
 		54C2A2651B45BDD600271412 /* MileageTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MileageTableViewController.swift; sourceTree = "<group>"; };
 		54C2A2671B45C33800271412 /* NewMileageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMileageViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				542B19281C2A2F1F00A64089 /* TextInputTableViewCell.swift */,
 				54007E951CA8E32A007B3DA2 /* NewPaymentTableViewCell.swift */,
 				54007E931CA8DC8A007B3DA2 /* PaymentDataTableViewCell.swift */,
+				54A956901CBB27490030E010 /* ClientDataTableViewCell.swift */,
 				54F186741AC49564006844CE /* Images.xcassets */,
 				54F186761AC49564006844CE /* LaunchScreen.xib */,
 				54F186691AC49564006844CE /* Supporting Files */,
@@ -345,6 +348,7 @@
 				547A8A691AC4E5F400CC4DB6 /* ClientsViewController.swift in Sources */,
 				542B19251C2A143B00A64089 /* Payment.swift in Sources */,
 				546B9EC61CBB0514001004F5 /* PaymentInfoViewController.swift in Sources */,
+				54A956911CBB27490030E010 /* ClientDataTableViewCell.swift in Sources */,
 				54007E941CA8DC8A007B3DA2 /* PaymentDataTableViewCell.swift in Sources */,
 				54007E961CA8E32A007B3DA2 /* NewPaymentTableViewCell.swift in Sources */,
 				54C2A2681B45C33800271412 /* NewMileageViewController.swift in Sources */,
