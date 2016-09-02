@@ -7,9 +7,9 @@ class Client: NSObject, NSCoding {
 
     var mileage: [Mileage]
     var notes: String
-    let timestamp: NSDate
+    let timestamp: Date
 
-    init(contact: CNContact, categories: [String:Category], mileage: [Mileage], notes: String, timestamp: NSDate) {
+    init(contact: CNContact, categories: [String:Category], mileage: [Mileage], notes: String, timestamp: Date) {
         self.contact = contact
         self.categories = categories
         self.timestamp = timestamp
@@ -20,28 +20,28 @@ class Client: NSObject, NSCoding {
     required init(coder: NSCoder) {
         var contact = CNContact()
         do {
-            let identifier = coder.decodeObjectForKey("contact") as! String
+            let identifier = coder.decodeObject(forKey: "contact") as! String
             let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey, CNContactIdentifierKey]
-            contact = try CNContactStore().unifiedContactWithIdentifier(identifier, keysToFetch: keysToFetch)
+            contact = try CNContactStore().unifiedContact(withIdentifier: identifier, keysToFetch: keysToFetch as [CNKeyDescriptor])
             print("Loaded contact \(contact.givenName) \(contact.familyName)")
         } catch {
             print("Unable to load a contact")
         }
         self.contact = contact
-        self.categories = coder.decodeObjectForKey("categories") as! [String:Category]
-        self.mileage = coder.decodeObjectForKey("mileage") as! [Mileage]
-        self.notes = coder.decodeObjectForKey("notes") as! String
-        self.timestamp = coder.decodeObjectForKey("timestamp") as! NSDate
+        self.categories = coder.decodeObject(forKey: "categories") as! [String:Category]
+        self.mileage = coder.decodeObject(forKey: "mileage") as! [Mileage]
+        self.notes = coder.decodeObject(forKey: "notes") as! String
+        self.timestamp = coder.decodeObject(forKey: "timestamp") as! Date
 
         super.init()
     }
 
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.contact.identifier, forKey: "contact")
-        coder.encodeObject(self.categories, forKey: "categories")
-        coder.encodeObject(self.mileage, forKey: "mileage")
-        coder.encodeObject(self.notes, forKey: "notes")
-        coder.encodeObject(self.timestamp, forKey: "timestamp")
+    func encode(with coder: NSCoder) {
+        coder.encode(self.contact.identifier, forKey: "contact")
+        coder.encode(self.categories, forKey: "categories")
+        coder.encode(self.mileage, forKey: "mileage")
+        coder.encode(self.notes, forKey: "notes")
+        coder.encode(self.timestamp, forKey: "timestamp")
     }
     
     func owed() -> Double {

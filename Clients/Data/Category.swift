@@ -11,8 +11,8 @@ class Category: NSObject, NSCoding {
     }
     
     required init(coder: NSCoder) {
-        self.total = coder.decodeDoubleForKey("total")
-        self.payments = coder.decodeObjectForKey("payments") as! [Payment]
+        self.total = coder.decodeDouble(forKey: "total")
+        self.payments = coder.decodeObject(forKey: "payments") as! [Payment]
 
         super.init()
     }
@@ -33,8 +33,8 @@ class Category: NSObject, NSCoding {
         return paid
     }
 
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeDouble(self.total, forKey: "total")
-        coder.encodeObject(self.payments, forKey: "payments")
+    func encode(with coder: NSCoder) {
+        coder.encode(self.total, forKey: "total")
+        coder.encode(self.payments, forKey: "payments")
     }
 }

@@ -27,7 +27,7 @@
 		54F186781AC49564006844CE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54F186761AC49564006844CE /* LaunchScreen.xib */; };
 		54F605CD1C2F4E3C00CB0A49 /* CSVManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F605CC1C2F4E3C00CB0A49 /* CSVManager.swift */; };
 		54F605CF1C2F56F200CB0A49 /* iCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F605CE1C2F56F200CB0A49 /* iCloudManager.swift */; };
-		7F1DFE747B5170955EB16EF4 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A3B066A5EB7401D33A39D58 /* Pods.framework */; };
+		801936859BFFBCD07E66B3EF /* Pods_Clients.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D878D132A184EA0BBF717A89 /* Pods_Clients.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		0A3B066A5EB7401D33A39D58 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F239145ED8EAF74B1845444 /* Pods-Clients.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clients.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Clients/Pods-Clients.debug.xcconfig"; sourceTree = "<group>"; };
 		54007E931CA8DC8A007B3DA2 /* PaymentDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentDataTableViewCell.swift; sourceTree = "<group>"; };
 		54007E951CA8E32A007B3DA2 /* NewPaymentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPaymentTableViewCell.swift; sourceTree = "<group>"; };
 		540C920F1B48790F00330FE1 /* Mileage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mileage.swift; sourceTree = "<group>"; };
@@ -66,8 +67,8 @@
 		54F1867D1AC49564006844CE /* Clients.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Clients.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F605CC1C2F4E3C00CB0A49 /* CSVManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSVManager.swift; sourceTree = "<group>"; };
 		54F605CE1C2F56F200CB0A49 /* iCloudManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iCloudManager.swift; sourceTree = "<group>"; };
-		7BF151A7054C66A8D68277F3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		8A19C1571B63D2FF4F677B65 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		C454141022F0101A6645A11F /* Pods-Clients.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clients.release.xcconfig"; path = "Pods/Target Support Files/Pods-Clients/Pods-Clients.release.xcconfig"; sourceTree = "<group>"; };
+		D878D132A184EA0BBF717A89 /* Pods_Clients.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Clients.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F1DFE747B5170955EB16EF4 /* Pods.framework in Frameworks */,
+				801936859BFFBCD07E66B3EF /* Pods_Clients.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +90,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3287D62F4F1C3B4EF26C83FD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2F239145ED8EAF74B1845444 /* Pods-Clients.debug.xcconfig */,
+				C454141022F0101A6645A11F /* Pods-Clients.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		542B191F1C2A116B00A64089 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,8 +115,8 @@
 			children = (
 				54F186681AC49564006844CE /* Clients */,
 				54F186671AC49564006844CE /* Products */,
-				E85BD74947A780A2C9895FBA /* Pods */,
 				9F4D9C4A02E310CEBD5EC6D5 /* Frameworks */,
+				3287D62F4F1C3B4EF26C83FD /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -173,17 +183,9 @@
 			isa = PBXGroup;
 			children = (
 				0A3B066A5EB7401D33A39D58 /* Pods.framework */,
+				D878D132A184EA0BBF717A89 /* Pods_Clients.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		E85BD74947A780A2C9895FBA /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				8A19C1571B63D2FF4F677B65 /* Pods.debug.xcconfig */,
-				7BF151A7054C66A8D68277F3 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,12 +195,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 54F186871AC49564006844CE /* Build configuration list for PBXNativeTarget "Clients" */;
 			buildPhases = (
-				26FBDBFF726E5B2F709E1AD5 /* Check Pods Manifest.lock */,
+				D8F1AF1501960BE3953F1125 /* [CP] Check Pods Manifest.lock */,
 				54F186621AC49564006844CE /* Sources */,
 				54F186631AC49564006844CE /* Frameworks */,
 				54F186641AC49564006844CE /* Resources */,
-				934473017B1BE4EACCC97D53 /* Embed Pods Frameworks */,
-				141946AA2BFE9EFF50192569 /* Copy Pods Resources */,
+				50212A6F674522A8D373591D /* [CP] Embed Pods Frameworks */,
+				ACF0A2882DE0A21FD11D0324 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -234,12 +236,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Tristen Miller";
 				TargetAttributes = {
 					54F186651AC49564006844CE = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = 6VJ9C2YY26;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 1;
@@ -292,49 +295,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		141946AA2BFE9EFF50192569 /* Copy Pods Resources */ = {
+		50212A6F674522A8D373591D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Clients/Pods-Clients-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		26FBDBFF726E5B2F709E1AD5 /* Check Pods Manifest.lock */ = {
+		ACF0A2882DE0A21FD11D0324 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Clients/Pods-Clients-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		934473017B1BE4EACCC97D53 /* Embed Pods Frameworks */ = {
+		D8F1AF1501960BE3953F1125 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -414,8 +417,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -424,6 +429,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -458,8 +464,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -467,6 +475,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -478,7 +487,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -486,35 +495,41 @@
 		};
 		54F186881AC49564006844CE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A19C1571B63D2FF4F677B65 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 2F239145ED8EAF74B1845444 /* Pods-Clients.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Clients/Clients.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 6VJ9C2YY26;
 				INFOPLIST_FILE = Clients/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hawkfalcon.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Clients;
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		54F186891AC49564006844CE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7BF151A7054C66A8D68277F3 /* Pods.release.xcconfig */;
+			baseConfigurationReference = C454141022F0101A6645A11F /* Pods-Clients.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Clients/Clients.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 6VJ9C2YY26;
 				INFOPLIST_FILE = Clients/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hawkfalcon.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Clients;
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

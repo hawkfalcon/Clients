@@ -1,13 +1,13 @@
 import UIKit
 import Contacts
-import SwiftCSV
+//import SwiftCSV
 
-class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
+class ClientsViewController: UITableViewController {
 
     @IBOutlet var total: UILabel!
     
-    static let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-    let archive = documentDirectory.URLByAppendingPathComponent("clients")
+    static let documentDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    let archive = documentDirectory.appendingPathComponent("clients")
     
     var clients = [Client]()
 
@@ -16,50 +16,50 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
         super.viewDidLoad()
         iCloudManager.setup()
 
-        if let data = NSKeyedUnarchiver.unarchiveObjectWithFile(archive.path!) as? [Client] {
+        if let data = NSKeyedUnarchiver.unarchiveObject(withFile: archive.path) as? [Client] {
             clients = data
             updateTotal()
         } else {
             //TODO help message
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(save), name: "save", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(save), name: NSNotification.Name(rawValue: "save"), object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.updatedClient()
     }
 
     // Setup layout
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return clients.count
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 45.0
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerFrame = tableView.frame
 
-        let view = UIView(frame: CGRectMake(0, 0, headerFrame.size.width, headerFrame.size.height))
-        let left = UILabel(frame: CGRectMake(15, 10, 300, 40))
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: headerFrame.size.width, height: headerFrame.size.height))
+        let left = UILabel(frame: CGRect(x: 15, y: 10, width: 300, height: 40))
         let right = UILabel()
         if let navigationBar = self.navigationController?.navigationBar {
             right.frame = CGRect(x: navigationBar.frame.width/2 - 35, y: 10, width: navigationBar.frame.width/2, height: navigationBar.frame.height)
         }
         //left.font = UIFont.systemFontOfSize(14.0)
-        left.backgroundColor = UIColor.clearColor()
-        left.textColor = UIColor.orangeColor()
+        left.backgroundColor = UIColor.clear
+        left.textColor = UIColor.orange
         left.text = "Name"
         
         right.text = "Paid          Owed"
-        right.textColor = UIColor.grayColor()
-        right.textAlignment = .Right
-        right.backgroundColor = UIColor.clearColor()
+        right.textColor = UIColor.gray
+        right.textAlignment = .right
+        right.backgroundColor = UIColor.clear
         
         view.addSubview(left)
         view.addSubview(right)
@@ -68,20 +68,20 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
     }
 
     // Populate data
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ClientCell") as? ClientDataTableViewCell
-        let client = clients[indexPath.row]
-        let name = "\(client.contact.familyName) \(client.contact.givenName)".trunc(18)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ClientCell") as? ClientDataTableViewCell
+        let client = clients[(indexPath as NSIndexPath).row]
+        let name = "\(client.contact.familyName) \(client.contact.givenName)".trunc(length: 18)
         let coloredName = NSMutableAttributedString(string: name)
         let length = client.contact.familyName.characters.count + 1
         let startPos = length < 18 ? length : 18
-        coloredName.addAttribute(NSForegroundColorAttributeName, value: UIColor.grayColor(), range: NSRange(location: startPos, length: name.characters.count - startPos))
+        coloredName.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location: startPos, length: name.characters.count - startPos))
 
         cell?.nameLabel.attributedText = coloredName
         
         cell?.paidLabel.text = "\(client.paid().currency)"
         
-        let color = client.complete() ? UIColor.blackColor() : UIColor.redColor()
+        let color = client.complete() ? UIColor.black : UIColor.red
         cell?.owedLabel.textColor = color
         cell?.owedLabel.text = "\(client.owed().currency)"
 
@@ -90,23 +90,23 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
 
 
     // Allow deletion
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            clients.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            clients.remove(at: (indexPath as NSIndexPath).row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
             saveAndUpdateTotal()
         }
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     // MARK Helper functions
 
     // Sort and refresh data
     func updatedClient() {
-        self.clients.sortInPlace {
+        self.clients.sort {
             if $0.complete() == $1.complete() {
                 return $0.contact.familyName < $1.contact.familyName
             }
@@ -132,12 +132,12 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
         total.text = "\(totalincome.currency)"
     }
 
-    func save(notification: NSNotification) {
+    func save(_ notification: Notification) {
         saveClientData()
     }
 
     func saveClientData() {
-        guard NSKeyedArchiver.archiveRootObject(clients, toFile: archive.path!)
+        guard NSKeyedArchiver.archiveRootObject(clients, toFile: archive.path)
         else {
             print("Failed to save clients")
             return
@@ -146,15 +146,15 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
 
     // MARK Segues
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if let id = segue.identifier where id.hasPrefix("client"), let destination = segue.destinationViewController as? ClientInfoViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
+        if let id = segue.identifier , id.hasPrefix("client"), let destination = segue.destination as? ClientInfoViewController {
             if segue.identifier == "clientInfo" {
-                if let index = tableView.indexPathForSelectedRow?.row {
+                if let index = (tableView.indexPathForSelectedRow as NSIndexPath?)?.row {
                     destination.client = clients[index]
                 }
             }
             else if segue.identifier == "clientCreation" {
-                let client = Client(contact: CNContact(), categories: [:], mileage: [], notes: "", timestamp: NSDate())
+                let client = Client(contact: CNContact(), categories: [:], mileage: [], notes: "", timestamp: Date())
                 self.clients.append(client)
                 destination.client = self.clients.last
             }
@@ -163,57 +163,57 @@ class ClientsViewController: UITableViewController, UIDocumentPickerDelegate {
 
     // Export data
     @IBAction func export(sender: AnyObject) {
-        let optionMenu = UIAlertController(title: "Export File", message: nil, preferredStyle: .ActionSheet)
+        let optionMenu = UIAlertController(title: "Export File", message: nil, preferredStyle: .actionSheet)
 
         for type in CSVManager.types {
-            let action = UIAlertAction(title: type, style: .Default, handler: {
+            let action = UIAlertAction(title: type, style: .default, handler: {
                 (alert: UIAlertAction!) -> Void in
-                self.exportToCSV(type)
+                self.exportToCSV(type: type)
             })
             optionMenu.addAction(action)
         }
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
             (alert: UIAlertAction!) -> Void in
         })
         optionMenu.addAction(cancelAction)
 
-        self.presentViewController(optionMenu, animated: true, completion: nil)
+        self.present(optionMenu, animated: true, completion: nil)
     }
 
     func exportToCSV(type: String) {
         let file = iCloudManager.backupClientData(clients, type: type)
         let activityVC = UIActivityViewController(activityItems: [file], applicationActivities: nil)
-        self.presentViewController(activityVC, animated: true, completion: nil)
+        self.present(activityVC, animated: true, completion: nil)
     }
 
-    // Import data
-    @IBAction func importData(sender: AnyObject) {
+    /* Import data
+    @IBAction func importData(_ sender: AnyObject) {
         //TODO fix "Unbalanced calls to begin/end appearance transitions"
-        let documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: ["public.comma-separated-values-text"], inMode: .Import)
+        let documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: ["public.comma-separated-values-text"], in: .import)
         documentPicker.delegate = self
-        documentPicker.modalPresentationStyle = UIModalPresentationStyle.FullScreen
-        self.presentViewController(documentPicker, animated: true, completion: nil)
+        documentPicker.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+        self.present(documentPicker, animated: true, completion: nil)
     }
 
-    func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL) {
-        if controller.documentPickerMode != UIDocumentPickerMode.Import {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        if controller.documentPickerMode != UIDocumentPickerMode.import {
             return
         }
-        let error: NSErrorPointer = nil
-        if let csv = CSV(contentsOfFile: url.path!, error: error) {
+        let error: NSErrorPointer? = nil
+        if let csv = CSV(contentsOfFile: url.path, error: error) {
             for client in CSVManager.parseClients(csv) {
                 clients.append(client)
             }
         }
         updatedClient()
-    }
+    }*/
 }
 
 extension String {
     func trunc(length: Int, trailing: String? = "...") -> String {
         if self.characters.count > length {
-            return self.substringToIndex(self.startIndex.advancedBy(length)) + (trailing ?? "")
+            return self.substring(to: self.characters.index(self.startIndex, offsetBy: length)) + (trailing ?? "")
         } else {
             return self
         }

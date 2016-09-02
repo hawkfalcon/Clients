@@ -11,47 +11,47 @@ class MileageTableViewController: UITableViewController {
     }
 
     // Setup layout
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return mileage.count
     }
 
     // Populate data
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("MilesCell")! as UITableViewCell
-        let formatter = NSDateFormatter()
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MilesCell")! as UITableViewCell
+        let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
-        let date = formatter.stringFromDate(mileage[indexPath.row].date)
+        let date = formatter.string(from: mileage[(indexPath as NSIndexPath).row].date as Date)
         cell.textLabel?.text = String(stringInterpolationSegment: date)
-        cell.detailTextLabel?.text = String(stringInterpolationSegment: mileage[indexPath.row].miles)
+        cell.detailTextLabel?.text = String(stringInterpolationSegment: mileage[(indexPath as NSIndexPath).row].miles)
         return cell
     }
 
     // Allow deletion
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            mileage.removeAtIndex(indexPath.row)
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            mileage.remove(at: (indexPath as NSIndexPath).row)
             client.mileage = mileage
-            NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "save"), object: nil)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
 
     // MARK Segues
 
-    @IBAction func unwindAndToData(segue: UIStoryboardSegue) {
-        let source = segue.sourceViewController as! NewMileageViewController
+    @IBAction func unwindAndToData(_ segue: UIStoryboardSegue) {
+        let source = segue.source as! NewMileageViewController
         let data: Mileage = source.mileage
         mileage.append(data)
         client.mileage = mileage
-        NSNotificationCenter.defaultCenter().postNotificationName("save", object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "save"), object: nil)
         self.tableView.reloadData()
     }
 
-    @IBAction func unwindBack(segue: UIStoryboardSegue) {
+    @IBAction func unwindBack(_ segue: UIStoryboardSegue) {
         //Cancelled
     }
 

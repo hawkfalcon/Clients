@@ -1,18 +1,18 @@
 import Foundation
 
 class iCloudManager {
-    static var documentsURL: NSURL!
+    static var documentsURL: URL!
 
     class func setup() {
-        guard let iCloudDocumentsURL = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil)?
-        .URLByAppendingPathComponent("Documents") else {
+        guard let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?
+        .appendingPathComponent("Documents") else {
             print("Unable to get iCloud URL")
             return
         }
         documentsURL = iCloudDocumentsURL
-        if (!NSFileManager.defaultManager().fileExistsAtPath(iCloudDocumentsURL.path!, isDirectory: nil)) {
+        if (!FileManager.default.fileExists(atPath: iCloudDocumentsURL.path, isDirectory: nil)) {
             do {
-                try NSFileManager.defaultManager().createDirectoryAtURL(iCloudDocumentsURL, withIntermediateDirectories: true, attributes: nil)
+                try FileManager.default.createDirectory(at: iCloudDocumentsURL, withIntermediateDirectories: true, attributes: nil)
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
@@ -20,17 +20,17 @@ class iCloudManager {
 
     }
 
-    class func backupClientData(clients: [Client], type: String) -> NSURL {
+    class func backupClientData(_ clients: [Client], type: String) -> URL {
         if documentsURL == nil {
-            return NSURL()
+            return URL(fileURLWithPath: "")
         }
         let content = CSVManager.getCSV(clients, type: type)
-        let formatter = NSDateFormatter()
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd_HH_mm_ss"
-        let date = formatter.stringFromDate(NSDate())
-        let file = documentsURL.URLByAppendingPathComponent("\(type)_\(date).csv");
+        let date = formatter.string(from: Date())
+        let file = documentsURL.appendingPathComponent("\(type)_\(date).csv")
         do {
-            try content.writeToURL(file, atomically: false, encoding: NSUTF8StringEncoding);
+            try content.write(to: file, atomically: false, encoding: String.Encoding.utf8.rawValue)
         } catch let error as NSError {
             print(error.localizedDescription)
         }

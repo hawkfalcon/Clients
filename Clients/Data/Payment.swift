@@ -6,9 +6,9 @@ class Payment: NSObject, NSCoding {
     var name: String
     var value: Double
     var type: String
-    var date: NSDate
+    var date: Date
 
-    init(name: String, value: Double, type: String, date: NSDate) {
+    init(name: String, value: Double, type: String, date: Date) {
         self.name = name
         self.value = value
         self.type = type
@@ -16,16 +16,16 @@ class Payment: NSObject, NSCoding {
     }
 
     required init(coder: NSCoder) {
-        self.name = coder.decodeObjectForKey("paymentName") as! String
-        self.value = coder.decodeDoubleForKey("paymentValue")
-        self.type = coder.decodeObjectForKey("paymentType") as! String
-        self.date = coder.decodeObjectForKey("paymentDate") as! NSDate
+        self.name = coder.decodeObject(forKey: "paymentName") as! String
+        self.value = coder.decodeDouble(forKey: "paymentValue")
+        self.type = coder.decodeObject(forKey: "paymentType") as! String
+        self.date = coder.decodeObject(forKey: "paymentDate") as! Date
     }
 
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.name, forKey: "paymentName")
-        coder.encodeDouble(self.value, forKey: "paymentValue")
-        coder.encodeObject(self.type, forKey: "paymentType")
-        coder.encodeObject(self.date, forKey: "paymentDate")
+    func encode(with coder: NSCoder) {
+        coder.encode(self.name, forKey: "paymentName")
+        coder.encode(self.value, forKey: "paymentValue")
+        coder.encode(self.type, forKey: "paymentType")
+        coder.encode(self.date, forKey: "paymentDate")
     }
 }

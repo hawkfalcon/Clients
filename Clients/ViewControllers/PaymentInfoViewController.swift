@@ -10,19 +10,19 @@ class PaymentInfoViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var date: UIDatePicker!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         navigationItem.title = payment.name
         
-        date.date = payment.date
+        date.date = payment.date as Date
         name.text = payment.name
         value.text = payment.value.currency
         type.text = payment.type
         
-        value.addTarget(self, action: #selector(fieldDidChange), forControlEvents: .EditingChanged)
-        name.addTarget(self, action: #selector(fieldDidChange), forControlEvents: .EditingChanged)
-        type.addTarget(self, action: #selector(fieldDidChange), forControlEvents: .EditingChanged)
+        value.addTarget(self, action: #selector(fieldDidChange), for: .editingChanged)
+        name.addTarget(self, action: #selector(fieldDidChange), for: .editingChanged)
+        type.addTarget(self, action: #selector(fieldDidChange), for: .editingChanged)
         
-        date.addTarget(self, action: #selector(dateDidChange), forControlEvents: .ValueChanged)
+        date.addTarget(self, action: #selector(dateDidChange), for: .valueChanged)
         
         value.delegate = self
         name.delegate = self
@@ -60,23 +60,23 @@ class PaymentInfoViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
-    func dateDidChange(datePicker: UIDatePicker) {
+    func dateDidChange(_ datePicker: UIDatePicker) {
         payment.date = datePicker.date
     }
     
     // Setup reponse
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return false
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if let money = textField.text?.rawDouble {
             textField.text = money.currency
         }
     }
     
-    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         tableView.endEditing(true)
     }
 }

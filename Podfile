@@ -1,4 +1,6 @@
 use_frameworks!
 
 platform :ios, "9.0"
-pod "SwiftCSV"
+
+target 'Clients' do
+end

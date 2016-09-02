@@ -7,7 +7,7 @@ class NewMileageViewController: UITableViewController, UITextFieldDelegate {
 
     var mileage: Mileage!
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         var mileAmount = 0.0
         if let miles = Double(miles.text!) {
             mileAmount = miles
