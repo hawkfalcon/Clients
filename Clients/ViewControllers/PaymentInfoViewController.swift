@@ -13,7 +13,7 @@ class PaymentInfoViewController: UITableViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         navigationItem.title = payment.name
         
-        date.date = payment.date as Date
+        date.date = payment.date as! Date
         name.text = payment.name
         value.text = payment.value.currency
         type.text = payment.type
@@ -21,14 +21,11 @@ class PaymentInfoViewController: UITableViewController, UITextFieldDelegate {
         value.addTarget(self, action: #selector(fieldDidChange), for: .editingChanged)
         name.addTarget(self, action: #selector(fieldDidChange), for: .editingChanged)
         type.addTarget(self, action: #selector(fieldDidChange), for: .editingChanged)
-        
         date.addTarget(self, action: #selector(dateDidChange), for: .valueChanged)
         
         value.delegate = self
         name.delegate = self
         type.delegate = self
-        
-        tableView.reloadData()
     }
 
     override func viewDidLoad() {
@@ -38,7 +35,7 @@ class PaymentInfoViewController: UITableViewController, UITextFieldDelegate {
         tableView.dataSource = self
     }
     
-    func fieldDidChange(textField: UITextField) {
+    func fieldDidChange(_ textField: UITextField) {
         if let placeholder = textField.placeholder {
             switch placeholder {
             case "Name":
@@ -61,7 +58,7 @@ class PaymentInfoViewController: UITableViewController, UITextFieldDelegate {
     }
     
     func dateDidChange(_ datePicker: UIDatePicker) {
-        payment.date = datePicker.date
+        payment.date = datePicker.date as NSDate?
     }
     
     // Setup reponse

@@ -1,17 +1,16 @@
 import UIKit
 import Contacts
 import ContactsUI
+import CoreData
 
-class NewCategoryViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CNContactPickerDelegate {
+class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNContactPickerDelegate {
     
     @IBOutlet var done: UIBarButtonItem!
     
-    @IBOutlet var tableView: UITableView!
-    
-    var category: Category!
     var name: String = ""
+    var total: Double = 0.0
     
-    let defaults = ["Contract", "Consultation", "Time and Materials", "Other"]
+    let defaults = ["Contract", "Consultation", "Time and Materials", "Custom"]
     let sections = ["Total Amount", "Category Name"]
     
     // Initialize
@@ -22,8 +21,6 @@ class NewCategoryViewController: UIViewController, UITableViewDataSource, UITabl
         
         tableView.delegate = self
         tableView.dataSource = self
-        
-        category = Category(total: 0.0, payments: [])
     }
     
     // Setup reponse
@@ -32,65 +29,79 @@ class NewCategoryViewController: UIViewController, UITableViewDataSource, UITabl
         return false
     }
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         tableView.endEditing(true)
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField.placeholder! == "Payment Name" {
+            tableView.selectRow(at: tableView.indexPathsForVisibleRows![4], animated: true, scrollPosition: .bottom)
+        }
+    }
+    
     // Setup layout
-    func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 1:
             return defaults.count
         default:
-            return 1;
+            return 1
         }
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section]
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55.0
     }
     
     // Populate data
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewCell", for: indexPath) as! TextInputTableViewCell
         
         var text = ""
-        var detail = ""
         
-        switch (indexPath as NSIndexPath).section {
+        switch indexPath.section {
         case 0:
             text = "Total"
-            detail = "0.0"
             cell.selectionStyle = .none
             cell.textField.keyboardType = .decimalPad
+            cell.textField.placeholder = "0.0"
         default:
-            text = defaults[(indexPath as NSIndexPath).row]
+            text = defaults[indexPath.row]
             if text == defaults[0] {
-                self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none);
+                self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             }
             if text != "Custom" {
                 cell.textField.isEnabled = false
             }
+            else {
+                cell.textField.placeholder = "Payment Name"
+            }
         }
         
         cell.textLabel?.text = text
-        cell.detailTextLabel?.text = detail
         cell.textField.delegate = self
         
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        tableView.endEditing(true)
+        if indexPath.section != 0 {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+        }
+        return nil
+    }
+    
     // Tapped on cell
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! TextInputTableViewCell
         if cell.textField != nil {
             cell.textField.becomeFirstResponder()
@@ -100,12 +111,17 @@ class NewCategoryViewController: UIViewController, UITableViewDataSource, UITabl
     // Populate client
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         let totalCell = tableView.cellForRow(at: tableView.indexPathsForVisibleRows![0]) as! TextInputTableViewCell
-        if let total = Double(totalCell.textField.text!) {
-            category.total = total
+        if let totalField = Double(totalCell.textField.text!) {
+            total = totalField
         }
-        if let selected = tableView.indexPathForSelectedRow, let cell = tableView.cellForRow(at: selected),
+        if let selected = tableView.indexPathForSelectedRow, let cell = tableView.cellForRow(at: selected) as? TextInputTableViewCell,
             let section = cell.textLabel?.text {
-            name = section
+            if section == "Custom" {
+                name = cell.textField.text!.capitalized
+            }
+            else {
+                name = section
+            }
         }
         print(name)
     }

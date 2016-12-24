@@ -9,24 +9,23 @@
 /* Begin PBXBuildFile section */
 		54007E941CA8DC8A007B3DA2 /* PaymentDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54007E931CA8DC8A007B3DA2 /* PaymentDataTableViewCell.swift */; };
 		54007E961CA8E32A007B3DA2 /* NewPaymentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54007E951CA8E32A007B3DA2 /* NewPaymentTableViewCell.swift */; };
-		540C92101B48790F00330FE1 /* Mileage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540C920F1B48790F00330FE1 /* Mileage.swift */; };
-		542B19211C2A11C300A64089 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542B19201C2A11C300A64089 /* Category.swift */; };
-		542B19251C2A143B00A64089 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542B19241C2A143B00A64089 /* Payment.swift */; };
 		542B19291C2A2F1F00A64089 /* TextInputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542B19281C2A2F1F00A64089 /* TextInputTableViewCell.swift */; };
+		5447096A1E0DCCBF005E0B8F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544709691E0DCCBF005E0B8F /* SettingsViewController.swift */; };
+		5447096C1E0DD56E005E0B8F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5447096B1E0DD56E005E0B8F /* Settings.swift */; };
 		5447B19A1AC7426400A5C48B /* ClientInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5447B1991AC7426400A5C48B /* ClientInfoViewController.swift */; };
 		545182C11CA7484500DF345A /* NewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545182C01CA7484500DF345A /* NewCategoryViewController.swift */; };
 		546B9EC61CBB0514001004F5 /* PaymentInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546B9EC51CBB0514001004F5 /* PaymentInfoViewController.swift */; };
 		547A8A691AC4E5F400CC4DB6 /* ClientsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A8A681AC4E5F400CC4DB6 /* ClientsViewController.swift */; };
-		547A8A6B1AC4E73D00CC4DB6 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A8A6A1AC4E73D00CC4DB6 /* Client.swift */; };
 		54A956911CBB27490030E010 /* ClientDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A956901CBB27490030E010 /* ClientDataTableViewCell.swift */; };
 		54C2A2661B45BDD600271412 /* MileageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C2A2651B45BDD600271412 /* MileageTableViewController.swift */; };
 		54C2A2681B45C33800271412 /* NewMileageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C2A2671B45C33800271412 /* NewMileageViewController.swift */; };
 		54DE51D81B45EA72008A2570 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54DE51D61B45EA72008A2570 /* Main.storyboard */; };
+		54EF3E9D1E0CD562005B0970 /* Clients.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 54EF3E9B1E0CD562005B0970 /* Clients.xcdatamodeld */; };
 		54F1866C1AC49564006844CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F1866B1AC49564006844CE /* AppDelegate.swift */; };
 		54F186751AC49564006844CE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54F186741AC49564006844CE /* Images.xcassets */; };
 		54F186781AC49564006844CE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54F186761AC49564006844CE /* LaunchScreen.xib */; };
-		54F605CD1C2F4E3C00CB0A49 /* CSVManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F605CC1C2F4E3C00CB0A49 /* CSVManager.swift */; };
-		54F605CF1C2F56F200CB0A49 /* iCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F605CE1C2F56F200CB0A49 /* iCloudManager.swift */; };
+		54F605CD1C2F4E3C00CB0A49 /* FileCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F605CC1C2F4E3C00CB0A49 /* FileCreator.swift */; };
+		54FEDE491E0B023B0086A072 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54FEDE481E0B023B0086A072 /* CoreData.framework */; };
 		801936859BFFBCD07E66B3EF /* Pods_Clients.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D878D132A184EA0BBF717A89 /* Pods_Clients.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,30 +42,29 @@
 /* Begin PBXFileReference section */
 		0A3B066A5EB7401D33A39D58 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F239145ED8EAF74B1845444 /* Pods-Clients.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clients.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Clients/Pods-Clients.debug.xcconfig"; sourceTree = "<group>"; };
-		54007E931CA8DC8A007B3DA2 /* PaymentDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentDataTableViewCell.swift; sourceTree = "<group>"; };
-		54007E951CA8E32A007B3DA2 /* NewPaymentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPaymentTableViewCell.swift; sourceTree = "<group>"; };
-		540C920F1B48790F00330FE1 /* Mileage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mileage.swift; sourceTree = "<group>"; };
-		542B19201C2A11C300A64089 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
-		542B19241C2A143B00A64089 /* Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
-		542B19281C2A2F1F00A64089 /* TextInputTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInputTableViewCell.swift; sourceTree = "<group>"; };
+		54007E931CA8DC8A007B3DA2 /* PaymentDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentDataTableViewCell.swift; path = Cells/PaymentDataTableViewCell.swift; sourceTree = "<group>"; };
+		54007E951CA8E32A007B3DA2 /* NewPaymentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewPaymentTableViewCell.swift; path = Cells/NewPaymentTableViewCell.swift; sourceTree = "<group>"; };
+		542B19281C2A2F1F00A64089 /* TextInputTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextInputTableViewCell.swift; path = Cells/TextInputTableViewCell.swift; sourceTree = "<group>"; };
+		544709691E0DCCBF005E0B8F /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		5447096B1E0DD56E005E0B8F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		5447B1991AC7426400A5C48B /* ClientInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientInfoViewController.swift; sourceTree = "<group>"; };
 		545182C01CA7484500DF345A /* NewCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
 		546B9EC51CBB0514001004F5 /* PaymentInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentInfoViewController.swift; sourceTree = "<group>"; };
 		547A8A681AC4E5F400CC4DB6 /* ClientsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientsViewController.swift; sourceTree = "<group>"; };
-		547A8A6A1AC4E73D00CC4DB6 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
-		54A956901CBB27490030E010 /* ClientDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientDataTableViewCell.swift; sourceTree = "<group>"; };
+		54A956901CBB27490030E010 /* ClientDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClientDataTableViewCell.swift; path = Cells/ClientDataTableViewCell.swift; sourceTree = "<group>"; };
 		54B3418C1C2F75440025D151 /* Clients.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Clients.entitlements; sourceTree = "<group>"; };
 		54C2A2651B45BDD600271412 /* MileageTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MileageTableViewController.swift; sourceTree = "<group>"; };
 		54C2A2671B45C33800271412 /* NewMileageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMileageViewController.swift; sourceTree = "<group>"; };
 		54DE51D71B45EA72008A2570 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		54EF3E9C1E0CD562005B0970 /* Clients.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Clients.xcdatamodel; sourceTree = "<group>"; };
 		54F186661AC49564006844CE /* Clients.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clients.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F1866A1AC49564006844CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		54F1866B1AC49564006844CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54F186741AC49564006844CE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		54F186771AC49564006844CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		54F1867D1AC49564006844CE /* Clients.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Clients.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		54F605CC1C2F4E3C00CB0A49 /* CSVManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSVManager.swift; sourceTree = "<group>"; };
-		54F605CE1C2F56F200CB0A49 /* iCloudManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iCloudManager.swift; sourceTree = "<group>"; };
+		54F605CC1C2F4E3C00CB0A49 /* FileCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileCreator.swift; sourceTree = "<group>"; };
+		54FEDE481E0B023B0086A072 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C454141022F0101A6645A11F /* Pods-Clients.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clients.release.xcconfig"; path = "Pods/Target Support Files/Pods-Clients/Pods-Clients.release.xcconfig"; sourceTree = "<group>"; };
 		D878D132A184EA0BBF717A89 /* Pods_Clients.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Clients.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -76,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54FEDE491E0B023B0086A072 /* CoreData.framework in Frameworks */,
 				801936859BFFBCD07E66B3EF /* Pods_Clients.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,15 +98,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		542B191F1C2A116B00A64089 /* Data */ = {
+		546EE25F1E0CD3AA001F2A13 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				547A8A6A1AC4E73D00CC4DB6 /* Client.swift */,
-				540C920F1B48790F00330FE1 /* Mileage.swift */,
-				542B19201C2A11C300A64089 /* Category.swift */,
-				542B19241C2A143B00A64089 /* Payment.swift */,
+				542B19281C2A2F1F00A64089 /* TextInputTableViewCell.swift */,
+				54007E951CA8E32A007B3DA2 /* NewPaymentTableViewCell.swift */,
+				54007E931CA8DC8A007B3DA2 /* PaymentDataTableViewCell.swift */,
+				54A956901CBB27490030E010 /* ClientDataTableViewCell.swift */,
 			);
-			path = Data;
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		54F1865D1AC49564006844CE = {
@@ -132,19 +131,17 @@
 		54F186681AC49564006844CE /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				546EE25F1E0CD3AA001F2A13 /* Cells */,
+				54F605CC1C2F4E3C00CB0A49 /* FileCreator.swift */,
+				54EF3E9B1E0CD562005B0970 /* Clients.xcdatamodeld */,
 				54B3418C1C2F75440025D151 /* Clients.entitlements */,
-				542B191F1C2A116B00A64089 /* Data */,
 				54F1866B1AC49564006844CE /* AppDelegate.swift */,
 				54F605D01C2F5D2A00CB0A49 /* ViewControllers */,
-				54F605D11C2F5D4000CB0A49 /* Managers */,
 				54DE51D61B45EA72008A2570 /* Main.storyboard */,
-				542B19281C2A2F1F00A64089 /* TextInputTableViewCell.swift */,
-				54007E951CA8E32A007B3DA2 /* NewPaymentTableViewCell.swift */,
-				54007E931CA8DC8A007B3DA2 /* PaymentDataTableViewCell.swift */,
-				54A956901CBB27490030E010 /* ClientDataTableViewCell.swift */,
 				54F186741AC49564006844CE /* Images.xcassets */,
 				54F186761AC49564006844CE /* LaunchScreen.xib */,
 				54F186691AC49564006844CE /* Supporting Files */,
+				5447096B1E0DD56E005E0B8F /* Settings.swift */,
 			);
 			path = Clients;
 			sourceTree = "<group>";
@@ -166,22 +163,15 @@
 				54C2A2651B45BDD600271412 /* MileageTableViewController.swift */,
 				54C2A2671B45C33800271412 /* NewMileageViewController.swift */,
 				546B9EC51CBB0514001004F5 /* PaymentInfoViewController.swift */,
+				544709691E0DCCBF005E0B8F /* SettingsViewController.swift */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		54F605D11C2F5D4000CB0A49 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				54F605CC1C2F4E3C00CB0A49 /* CSVManager.swift */,
-				54F605CE1C2F56F200CB0A49 /* iCloudManager.swift */,
-			);
-			path = Managers;
 			sourceTree = "<group>";
 		};
 		9F4D9C4A02E310CEBD5EC6D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				54FEDE481E0B023B0086A072 /* CoreData.framework */,
 				0A3B066A5EB7401D33A39D58 /* Pods.framework */,
 				D878D132A184EA0BBF717A89 /* Pods_Clients.framework */,
 			);
@@ -349,20 +339,18 @@
 			files = (
 				54F1866C1AC49564006844CE /* AppDelegate.swift in Sources */,
 				547A8A691AC4E5F400CC4DB6 /* ClientsViewController.swift in Sources */,
-				542B19251C2A143B00A64089 /* Payment.swift in Sources */,
+				54EF3E9D1E0CD562005B0970 /* Clients.xcdatamodeld in Sources */,
 				546B9EC61CBB0514001004F5 /* PaymentInfoViewController.swift in Sources */,
 				54A956911CBB27490030E010 /* ClientDataTableViewCell.swift in Sources */,
 				54007E941CA8DC8A007B3DA2 /* PaymentDataTableViewCell.swift in Sources */,
 				54007E961CA8E32A007B3DA2 /* NewPaymentTableViewCell.swift in Sources */,
 				54C2A2681B45C33800271412 /* NewMileageViewController.swift in Sources */,
-				540C92101B48790F00330FE1 /* Mileage.swift in Sources */,
 				5447B19A1AC7426400A5C48B /* ClientInfoViewController.swift in Sources */,
+				5447096C1E0DD56E005E0B8F /* Settings.swift in Sources */,
+				5447096A1E0DCCBF005E0B8F /* SettingsViewController.swift in Sources */,
 				545182C11CA7484500DF345A /* NewCategoryViewController.swift in Sources */,
-				542B19211C2A11C300A64089 /* Category.swift in Sources */,
-				54F605CF1C2F56F200CB0A49 /* iCloudManager.swift in Sources */,
-				54F605CD1C2F4E3C00CB0A49 /* CSVManager.swift in Sources */,
+				54F605CD1C2F4E3C00CB0A49 /* FileCreator.swift in Sources */,
 				54C2A2661B45BDD600271412 /* MileageTableViewController.swift in Sources */,
-				547A8A6B1AC4E73D00CC4DB6 /* Client.swift in Sources */,
 				542B19291C2A2F1F00A64089 /* TextInputTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,7 +492,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 6VJ9C2YY26;
 				INFOPLIST_FILE = Clients/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hawkfalcon.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Clients;
@@ -524,7 +512,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 6VJ9C2YY26;
 				INFOPLIST_FILE = Clients/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hawkfalcon.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Clients;
@@ -600,6 +588,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		54EF3E9B1E0CD562005B0970 /* Clients.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				54EF3E9C1E0CD562005B0970 /* Clients.xcdatamodel */,
+			);
+			currentVersion = 54EF3E9C1E0CD562005B0970 /* Clients.xcdatamodel */;
+			path = Clients.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 54F1865E1AC49564006844CE /* Project object */;
 }

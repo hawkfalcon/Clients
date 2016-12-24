@@ -1,47 +1,54 @@
 import UIKit
 import Contacts
-//import SwiftCSV
+import CoreData
 
 class ClientsViewController: UITableViewController {
 
     @IBOutlet var total: UILabel!
     
-    static let documentDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    let archive = documentDirectory.appendingPathComponent("clients")
+    var dataContext: NSManagedObjectContext!
     
-    var clients = [Client]()
-
-    // Initialize data
+    // MARK: - Core Data Control
+    
+    lazy var dataController: NSFetchedResultsController<Client> = {
+        let fetchRequest: NSFetchRequest<Client> = Client.fetchRequest()
+        
+        let sortComplete = NSSortDescriptor(key: #keyPath(Client.complete), ascending: true)
+        let sortName = NSSortDescriptor(key: #keyPath(Client.lastName), ascending: true)
+        fetchRequest.sortDescriptors = [sortComplete, sortName]
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.dataContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        fetchedResultsController.delegate = self
+        
+        return fetchedResultsController
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        iCloudManager.setup()
-
-        if let data = NSKeyedUnarchiver.unarchiveObject(withFile: archive.path) as? [Client] {
-            clients = data
-            updateTotal()
-        } else {
-            //TODO help message
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(save), name: NSNotification.Name(rawValue: "save"), object: nil)
+        
+        dataContext = appDelegate.persistentContainer.viewContext
+        
+        do {
+            try self.dataController.performFetch()
+        }
+        catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.updatedClient()
-    }
+        super.viewWillAppear(animated)
+        updateTotal()
 
-    // Setup layout
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return clients.count
+        tableView.reloadData()
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 45.0
-    }
-    
+    // MARK: - Header
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerFrame = tableView.frame
 
@@ -53,7 +60,7 @@ class ClientsViewController: UITableViewController {
         }
         //left.font = UIFont.systemFontOfSize(14.0)
         left.backgroundColor = UIColor.clear
-        left.textColor = UIColor.orange
+        left.textColor = Settings.themeColor
         left.text = "Name"
         
         right.text = "Paid          Owed"
@@ -67,105 +74,105 @@ class ClientsViewController: UITableViewController {
         return view
     }
 
-    // Populate data
+    // MARK: - Populate data
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ClientCell") as? ClientDataTableViewCell
-        let client = clients[(indexPath as NSIndexPath).row]
-        let name = "\(client.contact.familyName) \(client.contact.givenName)".trunc(length: 18)
-        let coloredName = NSMutableAttributedString(string: name)
-        let length = client.contact.familyName.characters.count + 1
-        let startPos = length < 18 ? length : 18
-        coloredName.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location: startPos, length: name.characters.count - startPos))
-
-        cell?.nameLabel.attributedText = coloredName
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ClientCell", for: indexPath) as? ClientDataTableViewCell else {
+            fatalError("Unexpected Cell")
+        }
         
-        cell?.paidLabel.text = "\(client.paid().currency)"
-        
-        let color = client.complete() ? UIColor.black : UIColor.red
-        cell?.owedLabel.textColor = color
-        cell?.owedLabel.text = "\(client.owed().currency)"
+        configure(cell, at: indexPath)
 
-        return cell!
+        return cell
     }
-
-
-    // Allow deletion
+    
+    func configure(_ cell: ClientDataTableViewCell, at indexPath: IndexPath) {
+        let client = dataController.object(at: indexPath)
+        
+        // Configure Cell
+        if let first = client.firstName, let last = client.lastName {
+            let name = "\(last) \(first)".trunc(length: 18)
+            let length = last.characters.count + 1
+            let startPos = length < 18 ? length : 18
+            
+            let coloredName = NSMutableAttributedString(string: name)
+            coloredName.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location: startPos, length: name.characters.count - startPos))
+        
+            cell.nameLabel.attributedText = coloredName
+        }
+        
+        cell.paidLabel.text = "\(client.paid().currency)"
+        
+        let color = client.complete ? UIColor.black : UIColor.red
+        cell.owedLabel.textColor = color
+        cell.owedLabel.text = "\(client.owed().currency)"
+    }
+    
+    // MARK: - Layout Setup
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sectionInfo = dataController.sections?[section] else {
+            return 0
+        }
+        
+        return sectionInfo.numberOfObjects
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 45.0
+    }
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            clients.remove(at: (indexPath as NSIndexPath).row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            saveAndUpdateTotal()
+            let client = dataController.object(at: indexPath)
+            client.managedObjectContext?.delete(client)
         }
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-
-    // MARK Helper functions
-
-    // Sort and refresh data
-    func updatedClient() {
-        self.clients.sort {
-            if $0.complete() == $1.complete() {
-                return $0.contact.familyName < $1.contact.familyName
-            }
-            return !$0.complete() && $1.complete()
-        }
-        tableView.reloadData()
-        updateTotal()
-    }
-
-    func saveAndUpdateTotal() {
-        updateTotal()
-        saveClientData()
-        iCloudManager.backupClientData(clients, type: "Clients")
-    }
-
+    // MARK: - Helper functions
+    
     func updateTotal() {
-        var totalincome: Double = 0.0
-        for client in clients {
-            for (_, category) in client.categories {
-                totalincome += category.total
-            }
-        }
-        total.text = "\(totalincome.currency)"
-    }
-
-    func save(_ notification: Notification) {
-        saveClientData()
-    }
-
-    func saveClientData() {
-        guard NSKeyedArchiver.archiveRootObject(clients, toFile: archive.path)
-        else {
-            print("Failed to save clients")
-            return
-        }
-    }
-
-    // MARK Segues
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
-        if let id = segue.identifier , id.hasPrefix("client"), let destination = segue.destination as? ClientInfoViewController {
-            if segue.identifier == "clientInfo" {
-                if let index = (tableView.indexPathForSelectedRow as NSIndexPath?)?.row {
-                    destination.client = clients[index]
+        var totalIncome: Double = 0.0
+        for client in dataController.fetchedObjects! {
+            for category in client.categories! {
+                let category = category as! Category
+                for payment in category.payments! {
+                    let payment = payment as! Payment
+                    totalIncome += payment.value
                 }
             }
-            else if segue.identifier == "clientCreation" {
-                let client = Client(contact: CNContact(), categories: [:], mileage: [], notes: "", timestamp: Date())
-                self.clients.append(client)
-                destination.client = self.clients.last
+        }
+        total.text = "\(totalIncome.currency)"
+    }
+    
+    // MARK: - Settings
+    @IBAction func unwindSettings(_ segue: UIStoryboardSegue) {
+        //let source = segue.source as! SettingsViewController
+        
+        tableView.reloadData()
+    }
+
+
+    // MARK: - Segue
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
+        if let id = segue.identifier, id.hasPrefix("client"), let destination = segue.destination as? ClientInfoViewController {
+            
+            destination.dataContext = dataContext
+            
+            if let index = tableView.indexPathForSelectedRow, segue.identifier == "clientInfo" {
+                destination.client = dataController.object(at: index)
             }
         }
     }
 
-    // Export data
+    // MARK: - Export data
     @IBAction func export(sender: AnyObject) {
         let optionMenu = UIAlertController(title: "Export File", message: nil, preferredStyle: .actionSheet)
 
-        for type in CSVManager.types {
+        for type in FileCreator.types {
             let action = UIAlertAction(title: type, style: .default, handler: {
                 (alert: UIAlertAction!) -> Void in
                 self.exportToCSV(type: type)
@@ -182,12 +189,15 @@ class ClientsViewController: UITableViewController {
     }
 
     func exportToCSV(type: String) {
-        let file = iCloudManager.backupClientData(clients, type: type)
+        let file = FileCreator.createFile(clients: dataController.fetchedObjects!, type: type)
         let activityVC = UIActivityViewController(activityItems: [file], applicationActivities: nil)
         self.present(activityVC, animated: true, completion: nil)
     }
 
-    /* Import data
+    /* Import data: TODO
+     static let documentDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+     let archive = documentDirectory.appendingPathComponent("clients")
+     
     @IBAction func importData(_ sender: AnyObject) {
         //TODO fix "Unbalanced calls to begin/end appearance transitions"
         let documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: ["public.comma-separated-values-text"], in: .import)
@@ -210,7 +220,75 @@ class ClientsViewController: UITableViewController {
     }*/
 }
 
+extension ClientsViewController: NSFetchedResultsControllerDelegate {
+    
+    // MARK: - Allow Deletion, Insertion, etc
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch (type) {
+        case .insert:
+            if let indexPath = newIndexPath {
+                tableView.insertRows(at: [indexPath], with: .fade)
+            }
+        case .delete:
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        case .update:
+            if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? ClientDataTableViewCell {
+                configure(cell, at: indexPath)
+            }
+        case .move:
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+            
+            if let newIndexPath = newIndexPath {
+                tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
+        }
+    }
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+}
+
+extension Client {
+    func owed() -> Double {
+        var owed = 0.0
+        for category in self.categories! {
+            let category = category as! Category
+            var stillOwed = category.total
+            for payment in category.payments! {
+                let payment = payment as! Payment
+                stillOwed -= payment.value
+            }
+            owed += stillOwed
+        }
+
+        return owed
+    }
+    
+    func paid() -> Double {
+        var paid = 0.0
+        for category in self.categories! {
+            let category = category as! Category
+            for payment in category.payments! {
+                let payment = payment as! Payment
+                paid += payment.value
+            }
+        }
+        
+        return paid
+    }
+}
+
 extension String {
+    // Truncates too long str...
     func trunc(length: Int, trailing: String? = "...") -> String {
         if self.characters.count > length {
             return self.substring(to: self.characters.index(self.startIndex, offsetBy: length)) + (trailing ?? "")
