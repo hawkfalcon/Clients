@@ -128,6 +128,7 @@ class ClientsViewController: UITableViewController {
         if editingStyle == .delete {
             let client = dataController.object(at: indexPath)
             client.managedObjectContext?.delete(client)
+            dataContext.saveChanges()
         }
     }
 

@@ -5,6 +5,9 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var includeMileage: UISwitch!
     @IBOutlet weak var colorView: UICollectionView!
     
+    @IBOutlet weak var defaultPaymentName: UITextField!
+    @IBOutlet weak var defaultPaymentType: UITextField!
+    
     let colors: [UIColor] = [.flatWhite, .flatGray, .flatBlack,
                              .flatRed, .flatOrange, .flatYellow,
                              .flatGreen, .flatGreenDark, .flatBlue,
@@ -15,7 +18,42 @@ class SettingsViewController: UITableViewController {
         colorView.delegate = self
         colorView.dataSource = self
         
-        self.includeMileage.onTintColor = Settings.themeColor
+        defaultPaymentName.delegate = self
+        defaultPaymentType.delegate = self
+        
+        includeMileage.onTintColor = Settings.themeColor
+        
+        defaultPaymentName.text = Settings.defaultPaymentName
+        defaultPaymentType.text = Settings.defaultPaymentType
+        
+        includeMileage.isOn = Settings.enabledMileage
+    }
+    
+    @IBAction func switchToggle(_ sender: UISwitch) {
+        Settings.enabledMileage = sender.isOn
+    }
+    
+    @IBAction func fieldChanged(_ sender: UITextField) {
+        if let name = sender.placeholder {
+            if name == "Name" {
+                Settings.defaultPaymentName = sender.text!
+            }
+            if name == "Type" {
+                Settings.defaultPaymentType = sender.text!
+            }
+        }
+    }
+}
+
+extension SettingsViewController: UITextFieldDelegate {
+    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        tableView.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
     }
 }
 

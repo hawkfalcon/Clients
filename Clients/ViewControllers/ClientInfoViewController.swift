@@ -19,6 +19,10 @@ class ClientInfoViewController: UITableViewController {
         
         var title = "New Contact"
         sections = ["Contact", "Categories", "Driving", "Other"]
+        
+        if !Settings.enabledMileage {
+            sections.remove(at: 2)
+        }
 
         if let client = client {
             if let first = client.firstName, let last = client.lastName {
@@ -34,6 +38,8 @@ class ClientInfoViewController: UITableViewController {
             client = Client(context: dataContext)
             client.timestamp = NSDate()
             client.notes = ""
+            client.firstName = "First"
+            client.lastName = "Last"
         }
         
         navigationItem.title = title
@@ -72,8 +78,10 @@ class ClientInfoViewController: UITableViewController {
         }
         else {
             let category = client.categories!.object(at: section - 2) as! Category
-            let cell = tableView.dequeueReusableCell(withIdentifier: "PaymentCell", for: indexPath) as! PaymentDataTableViewCell
             
+            let identifier = indexPath.row == 0 ? "PaymentTotalCell" : "PaymentCell"
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! PaymentDataTableViewCell
+
             if indexPath.row == 0 {
                 configure(cell, for: category)
             }
@@ -84,6 +92,7 @@ class ClientInfoViewController: UITableViewController {
                 cell.valueField.text = "\(payment.value.currency)"
                 cell.valueField.isEnabled = false
             }
+            
             cell.addTargets(viewController: self)
             
             return cell
@@ -186,21 +195,6 @@ class ClientInfoViewController: UITableViewController {
             performSegue(withIdentifier: "addCategory", sender: nil)
         }
         else if cell is NewPaymentTableViewCell {
-            let category = client.categories!.object(at: indexPath.section - 2) as! Category
-            
-            let payment = Payment(context: dataContext)
-            payment.name = "Down"
-            payment.type = "Check"
-            payment.value = 0.0
-            payment.date = NSDate()
-            
-            category.addToPayments(payment)
-            dataContext.saveChanges()
-            
-            tableView.beginUpdates()
-            tableView.insertRows(at: [indexPath], with: .automatic)
-            tableView.endUpdates()
-            
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             self.performSegue(withIdentifier: "toPayment", sender: self)
         }
@@ -274,7 +268,7 @@ class ClientInfoViewController: UITableViewController {
         if isCategory(section) {
             return 0.0001
         }
-        else if category == "Contact" || category == "Driving" {
+        else if category == "Contact" || category == "Driving" || (category == "Other" && !Settings.enabledMileage) {
             return 36.0
         }
         return 18.0;
@@ -298,8 +292,13 @@ class ClientInfoViewController: UITableViewController {
             tableView.beginUpdates()
             if indexPath.row == 0 {
                 client.removeFromCategories(at: indexPath.section - 2)
-                sections.remove(at: indexPath.section)
-                tableView.deleteSections(IndexSet(integer: indexPath.section), with: .automatic)
+                sections.remove(at: 2)
+                tableView.deleteSections([indexPath.section], with: .automatic)
+                
+                if client.categories!.count == 0 {
+                    let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1))
+                    cell!.textLabel!.text = "Add a Category +"
+                }
             }
             else {
                 let category = client.categories!.object(at: indexPath.section - 2) as! Category
@@ -323,6 +322,7 @@ class ClientInfoViewController: UITableViewController {
         client.addToCategories(category)
         
         dataContext.saveChanges()
+        sections.insert(category.name!, at: 2)
         tableView.reloadData()
     }
     
@@ -342,7 +342,15 @@ class ClientInfoViewController: UITableViewController {
             else if id == "toPayment", let destination = segue.destination as? PaymentInfoViewController {
                 if let index = tableView.indexPathForSelectedRow {
                     let category = client.categories!.object(at: index.section - 2) as! Category
-                    let payment = category.payments!.object(at: index.row - 1) as! Payment
+                    
+                    let payment = Payment(context: dataContext)
+                    payment.name = Settings.defaultPaymentName
+                    payment.type = Settings.defaultPaymentType
+                    payment.value = 0.0
+                    payment.date = NSDate()
+                    
+                    category.addToPayments(payment)
+                    dataContext.saveChanges()
 
                     destination.payment = payment
                 }

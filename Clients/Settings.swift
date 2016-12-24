@@ -4,8 +4,10 @@ import ChameleonFramework
 
 class Settings {
     
-    private static let themeColorKey = "themeColorKey"
+    private static let themeColorKey = "themeColor"
     private static let enabledMileageKey = "enabledMileage"
+    private static let defaultPaymentNameKey = "defaultPaymentName"
+    private static let defaultPaymentTypeKey = "defaultPaymentType"
     
     static var enabledMileage: Bool {
         get {
@@ -13,6 +15,24 @@ class Settings {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: enabledMileageKey)
+        }
+    }
+    
+    static var defaultPaymentName: String {
+        get {
+            return UserDefaults.standard.string(forKey: defaultPaymentNameKey)!
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: defaultPaymentNameKey)
+        }
+    }
+
+    static var defaultPaymentType: String {
+        get {
+            return UserDefaults.standard.string(forKey: defaultPaymentTypeKey)!
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: defaultPaymentTypeKey)
         }
     }
     
@@ -38,6 +58,9 @@ class Settings {
             
             enabledMileage = true
             themeColor = .flatOrange
+            
+            defaultPaymentName = "Down"
+            defaultPaymentType = "Check"
         }
     }
 }
