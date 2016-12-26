@@ -21,10 +21,9 @@ Feel free to submit any pull requests or create issues.
 
 ### TODO
 
-- [ ] Allow data importing (0/2 complete)
+- [ ] Allow data importing 
 - [x] Switch to use core data
-- [ ] Continue to refactor and make more generic 
-- [ ] Add settings for color, toggle mileage, etc
+- [x] Add settings for color, toggle mileage, etc
 - [x] Make categories customizable in-app, completely dynamic
 
 ### License
