@@ -49,6 +49,7 @@ class ClientInfoViewController: UITableViewController {
         tableView.reloadData()
 
         client!.complete = client.owed() == 0.0
+        dataContext.saveChanges()
 
         super.viewWillAppear(animated)
     }
@@ -196,6 +197,16 @@ class ClientInfoViewController: UITableViewController {
         } else if let text = cell.textLabel?.text, text == "Add a Category +" {
             performSegue(withIdentifier: "addCategory", sender: nil)
         } else if cell is NewPaymentTableViewCell {
+            let category = client.category(section: indexPath.section)
+            let payment = Payment(context: dataContext)
+            payment.name = Settings.defaultPaymentName
+            payment.type = Settings.defaultPaymentType
+            payment.value = 0.0
+            payment.date = NSDate()
+            
+            category?.addToPayments(payment)
+            dataContext.saveChanges()
+
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             self.performSegue(withIdentifier: "toPayment", sender: self)
         } else {
@@ -339,16 +350,8 @@ class ClientInfoViewController: UITableViewController {
             } else if id == "toPayment", let destination = segue.destination as? PaymentInfoViewController {
                 if let index = tableView.indexPathForSelectedRow {
                     let category = client.category(section: index.section)!
-
-                    let payment = Payment(context: dataContext)
-                    payment.name = Settings.defaultPaymentName
-                    payment.type = Settings.defaultPaymentType
-                    payment.value = 0.0
-                    payment.date = NSDate()
-
-                    category.addToPayments(payment)
-                    dataContext.saveChanges()
-
+                    let payment = category.payments!.object(at: index.row - 1) as! Payment
+                    
                     destination.payment = payment
                 }
             }
