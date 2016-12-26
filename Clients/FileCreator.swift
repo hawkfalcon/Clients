@@ -10,10 +10,10 @@ class FileCreator {
             return createZip(clients)
         }
         guard let path = FileManager.default
-            .urls(for: .documentDirectory, in: .userDomainMask).first else {
-                return URL(fileURLWithPath: "")
+                .urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return URL(fileURLWithPath: "")
         }
-        
+
         let content = getCSV(clients, type: type)
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd_HH_mm_ss"
@@ -29,21 +29,21 @@ class FileCreator {
 
     class func createZip(_ clients: [Client]) -> URL {
         guard let path = FileManager.default
-            .urls(for: .documentDirectory, in: .userDomainMask).first else {
-                return URL(fileURLWithPath: "")
+                .urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return URL(fileURLWithPath: "")
         }
-        
+
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd_HH_mm_ss"
         let date = formatter.string(from: Date())
-        
+
         let folder = path.appendingPathComponent("Clients_\(date)")
         do {
             try FileManager.default.createDirectory(atPath: folder.path, withIntermediateDirectories: false, attributes: nil)
         } catch let error as NSError {
             print(error.localizedDescription);
         }
-        
+
         for type in types {
             if type == "All" {
                 continue
@@ -80,12 +80,12 @@ class FileCreator {
                 names += "\(last)"
             }
             names += ","
-            
+
             if let first = client.firstName {
                 names += "\(first)"
             }
             names += ","
-            
+
             var milesText = ""
             var total = 0.0
             for miles in client.mileage! {
@@ -104,7 +104,7 @@ class FileCreator {
         }
         return NSString(string: data)
     }
-    
+
     private class func getPaymentsCSV(_ clients: [Client]) -> NSString {
         var data = "Last,First,Category,Name,Type,Amount,Date\n"
         for client in clients {
@@ -113,33 +113,33 @@ class FileCreator {
                 names += "\(last)"
             }
             names += ","
-            
+
             if let first = client.firstName {
                 names += "\(first)"
             }
             names += ","
-            
+
             for category in client.categories! {
                 let category = category as! Category
-                
+
                 for payment in category.payments! {
                     let payment = payment as! Payment
-                    
+
                     data += "\(names)"
                     if let name = category.name {
                         data += "\(name)"
                     }
                     data += ","
-                    
+
                     data += "\(payment.name!),"
                     data += "\(payment.type!),"
                     data += "\(payment.value),"
-                    
+
                     let formatter = DateFormatter()
                     formatter.dateFormat = "MM/dd/yyyy HH:mm:ss"
                     let date = formatter.string(from: payment.date as! Date)
                     data += "\(date)"
-                    
+
                     data += "\n"
                 }
             }
@@ -147,7 +147,7 @@ class FileCreator {
         }
         return NSString(string: data)
     }
-    
+
     private class func getCategoriesCSV(_ clients: [Client]) -> NSString {
         var data = "Last,First,Category,Total\n"
         for client in clients {
@@ -156,21 +156,21 @@ class FileCreator {
                 names += "\(last)"
             }
             names += ","
-            
+
             if let first = client.firstName {
                 names += "\(first)"
             }
             names += ","
-    
+
             for category in client.categories! {
                 let category = category as! Category
-                
+
                 data += "\(names)"
                 if let name = category.name {
                     data += "\(name)"
                 }
                 data += ","
-                
+
                 data += "\(category.total)"
                 data += "\n"
             }
@@ -178,7 +178,7 @@ class FileCreator {
         }
         return NSString(string: data)
     }
-    
+
     private class func getClientsCSV(_ clients: [Client]) -> NSString {
         var data = "Last,First,Phone,Email,Notes,Timestamp,Total Paid, Total Owed\n"
         for client in clients {
@@ -191,23 +191,22 @@ class FileCreator {
                 data += "\(first)"
             }
             data += ","
-            
+
             do {
                 let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey, CNContactIdentifierKey]
                 let contact = try CNContactStore().unifiedContact(withIdentifier: client.contact!, keysToFetch: keysToFetch as [CNKeyDescriptor])
-            
+
                 if let phone = contact.phoneNumbers.first {
                     let phoneNumber = phone.value
                     data += "\(phoneNumber.stringValue)"
                 }
                 data += ","
-                
+
                 if let email = contact.emailAddresses.first {
                     data += "\(email.value)"
                 }
                 data += ","
-            }
-            catch {
+            } catch {
                 print("Invalid contact")
             }
             if let notes = client.notes {
@@ -219,13 +218,13 @@ class FileCreator {
             formatter.dateFormat = "MM/dd/yyyy"
             let date = formatter.string(from: client.timestamp as! Date)
             data += "\(date),"
-            
+
             data += "\(client.paid()),"
             data += "\(client.owed())"
-            
+
             data += "\n"
         }
-        
+
         return NSString(string: data)
     }
 }

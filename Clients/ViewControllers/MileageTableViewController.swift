@@ -35,7 +35,7 @@ class MileageTableViewController: UITableViewController {
         }
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
-        
+
         let miles = mileage.object(at: indexPath.row) as? Mileage
         let date = formatter.string(from: miles!.date as! Date)
         cell.textLabel?.text = String(stringInterpolationSegment: date)
@@ -71,13 +71,13 @@ class MileageTableViewController: UITableViewController {
 
     @IBAction func unwindAndToData(_ segue: UIStoryboardSegue) {
         let source = segue.source as! NewMileageViewController
-        
+
         let miles = Mileage(context: dataContext)
         miles.miles = source.mileage
         miles.date = source.mileageDate
-        
+
         client.addToMileage(miles)
-        
+
         dataContext.saveChanges()
         self.tableView.reloadData()
     }

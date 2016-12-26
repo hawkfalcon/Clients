@@ -13,13 +13,13 @@ class ClientInfoViewController: UITableViewController {
     // MARK: - Setup
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         tableView.delegate = self
         tableView.dataSource = self
-        
+
         var title = "New Contact"
         sections = ["Contact", "Categories", "Driving", "Other"]
-        
+
         if !Settings.enabledMileage {
             sections.remove(at: 2)
         }
@@ -28,29 +28,28 @@ class ClientInfoViewController: UITableViewController {
             if let first = client.firstName, let last = client.lastName {
                 title = "\(first) \(last)"
             }
-        
+
             for category in client.categories! {
                 let category = category as! Category
                 sections.insert(category.name!, at: 2)
             }
-        }
-        else {
+        } else {
             client = Client(context: dataContext)
             client.timestamp = NSDate()
             client.notes = ""
             client.firstName = "First"
             client.lastName = "Last"
         }
-        
+
         navigationItem.title = title
         dataContext.saveChanges()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
-        
+
         client!.complete = client.owed() == 0.0
-        
+
         super.viewWillAppear(animated)
     }
 
@@ -60,11 +59,10 @@ class ClientInfoViewController: UITableViewController {
         var cell: UITableViewCell
         if isCategory(section) {
             cell = createPaymentCell(section: section, indexPath: indexPath)
-        }
-        else {
+        } else {
             cell = createInfoCell(section: sections[section], indexPath: indexPath)
         }
-        
+
         return cell
     }
 
@@ -73,32 +71,30 @@ class ClientInfoViewController: UITableViewController {
         if indexPath.row == last {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewPaymentCell", for: indexPath) as! NewPaymentTableViewCell
             cell.configure(type: "Payment")
-            
+
             return cell
-        }
-        else {
+        } else {
             let category = client.categories!.object(at: section - 2) as! Category
-            
+
             let identifier = indexPath.row == 0 ? "PaymentTotalCell" : "PaymentCell"
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! PaymentDataTableViewCell
 
             if indexPath.row == 0 {
                 configure(cell, for: category)
-            }
-            else {
+            } else {
                 let payment = category.payments!.object(at: indexPath.row - 1) as! Payment
-                
+
                 cell.paymentField.text = payment.name
                 cell.valueField.text = "\(payment.value.currency)"
                 cell.valueField.isEnabled = false
             }
-            
+
             cell.addTargets(viewController: self)
-            
+
             return cell
         }
     }
-    
+
     func configure(_ cell: PaymentDataTableViewCell, for category: Category) {
         let leftLabel = UILabel()
         leftLabel.text = "Total: "
@@ -107,23 +103,23 @@ class ClientInfoViewController: UITableViewController {
         leftLabel.sizeToFit()
         cell.valueField.leftView = leftLabel
         cell.valueField.leftViewMode = .unlessEditing
-        
+
         cell.paymentField.text = category.name
         cell.paymentField.isEnabled = false
         cell.paymentField.font = UIFont.boldSystemFont(ofSize: 16)
-        
+
         cell.valueField.text = "\(category.total.currency)"
         cell.valueField.sizeToFit()
-        
+
         cell.backgroundColor = UIColor.lightText
-        
+
         cell.selectionStyle = .none
         cell.accessoryType = .none
     }
 
     func createInfoCell(section: String, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "InfoCell", for: indexPath) as! TextInputTableViewCell
-        
+
         var title = ""
         var value = ""
         cell.textField.isEnabled = false
@@ -152,7 +148,7 @@ class ClientInfoViewController: UITableViewController {
             cell.detailTextLabel?.numberOfLines = 0;
             cell.textField.isEnabled = true
             cell.textField.keyboardType = .default
-            cell.textField.frame.size.height = cell.frame.size.height * (9/10)
+            cell.textField.frame.size.height = cell.frame.size.height * (9 / 10)
         case "Categories":
             if client.categories!.count == 0 {
                 title = "Add a Category +"
@@ -160,56 +156,50 @@ class ClientInfoViewController: UITableViewController {
         default:
             print("?")
         }
-        
+
         if section == "Contact" || section == "Driving" {
             cell.selectionStyle = .default
             cell.accessoryType = .disclosureIndicator
-        }
-        else {
+        } else {
             cell.accessoryType = .none
             cell.selectionStyle = .none
         }
-        
+
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
-        
+
         return cell
     }
-    
+
     // MARK: - Tapped on cell
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let cell = tableView.cellForRow(at: indexPath)! as UITableViewCell
-        if let text = cell.detailTextLabel?.text , text == "Go to Contact" {
+        if let text = cell.detailTextLabel?.text, text == "Go to Contact" {
             if let contact = client.contact {
                 loadContact(identifier: contact)
-            }
-            else {
+            } else {
                 showContactsPicker()
             }
-        }
-        else if let text = cell.textLabel?.text , text == "Miles Driven" {
+        } else if let text = cell.textLabel?.text, text == "Miles Driven" {
             performSegue(withIdentifier: "toMiles", sender: nil)
-        }
-        else if let text = cell.textLabel?.text , text == "Add a Category +" {
+        } else if let text = cell.textLabel?.text, text == "Add a Category +" {
             performSegue(withIdentifier: "addCategory", sender: nil)
-        }
-        else if cell is NewPaymentTableViewCell {
+        } else if cell is NewPaymentTableViewCell {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             self.performSegue(withIdentifier: "toPayment", sender: self)
-        }
-        else {
+        } else {
             if let textCell = cell as? TextInputTableViewCell, textCell.textField != nil {
                 textCell.textField.becomeFirstResponder()
             }
         }
     }
-    
+
     // MARK: - Setup layout
     override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isCategory(section) {
             let category = client.categories!.object(at: section - 2) as! Category
@@ -217,7 +207,7 @@ class ClientInfoViewController: UITableViewController {
         }
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let category = sections[section]
         if isCategory(section) {
@@ -225,7 +215,7 @@ class ClientInfoViewController: UITableViewController {
         }
         return category
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = sections[indexPath.section]
         switch section {
@@ -247,14 +237,14 @@ class ClientInfoViewController: UITableViewController {
             return 55.0
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if isCategory(indexPath.section) && indexPath.row == 0 {
             return nil
         }
         return indexPath
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let category = sections[section]
         if isCategory(section) || category == "Categories" {
@@ -262,18 +252,17 @@ class ClientInfoViewController: UITableViewController {
         }
         return 18.0;
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let category = sections[section]
         if isCategory(section) {
             return 0.0001
-        }
-        else if category == "Contact" || category == "Driving" || (category == "Other" && !Settings.enabledMileage) {
+        } else if category == "Contact" || category == "Driving" || (category == "Other" && !Settings.enabledMileage) {
             return 36.0
         }
         return 18.0;
     }
-    
+
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let last = tableView.numberOfRows(inSection: indexPath.section) - 1
         if isCategory(indexPath.section) && indexPath.row != last {
@@ -281,11 +270,11 @@ class ClientInfoViewController: UITableViewController {
         }
         return false
     }
-    
+
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         tableView.endEditing(true)
     }
-    
+
     // MARK: - Allow deletion
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -294,13 +283,12 @@ class ClientInfoViewController: UITableViewController {
                 client.removeFromCategories(at: indexPath.section - 2)
                 sections.remove(at: 2)
                 tableView.deleteSections([indexPath.section], with: .automatic)
-                
+
                 if client.categories!.count == 0 {
                     let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1))
                     cell!.textLabel!.text = "Add a Category +"
                 }
-            }
-            else {
+            } else {
                 let category = client.categories!.object(at: indexPath.section - 2) as! Category
                 category.removeFromPayments(at: indexPath.row - 1)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -309,23 +297,23 @@ class ClientInfoViewController: UITableViewController {
             tableView.endUpdates()
         }
     }
-    
+
     // MARK: - Return from new category
-    
+
     @IBAction func unwindAndAddCategory(_ segue: UIStoryboardSegue) {
         let source = segue.source as! NewCategoryViewController
-        
+
         let category = Category(context: dataContext)
         category.name = source.name
         category.total = source.total
-        
+
         client.addToCategories(category)
-        
+
         dataContext.saveChanges()
         sections.insert(category.name!, at: 2)
         tableView.reloadData()
     }
-    
+
     @IBAction func unwindToClient(_ segue: UIStoryboardSegue) {
         //Cancelled
     }
@@ -336,19 +324,18 @@ class ClientInfoViewController: UITableViewController {
             if id == "toMiles", let destination = segue.destination as? MileageTableViewController {
                 destination.mileage = client.mileage!
                 destination.client = client
-                
+
                 destination.dataContext = dataContext
-            }
-            else if id == "toPayment", let destination = segue.destination as? PaymentInfoViewController {
+            } else if id == "toPayment", let destination = segue.destination as? PaymentInfoViewController {
                 if let index = tableView.indexPathForSelectedRow {
                     let category = client.categories!.object(at: index.section - 2) as! Category
-                    
+
                     let payment = Payment(context: dataContext)
                     payment.name = Settings.defaultPaymentName
                     payment.type = Settings.defaultPaymentType
                     payment.value = 0.0
                     payment.date = NSDate()
-                    
+
                     category.addToPayments(payment)
                     dataContext.saveChanges()
 
@@ -357,7 +344,7 @@ class ClientInfoViewController: UITableViewController {
             }
         }
     }
-    
+
     func isCategory(_ section: Int) -> Bool {
         return section > 1 && section < client.categories!.count + 2
     }
@@ -368,8 +355,7 @@ extension NSManagedObjectContext {
         if self.hasChanges {
             do {
                 try self.save()
-            }
-            catch {
+            } catch {
                 print("An error occurred while saving: \(error)")
             }
         }
@@ -381,19 +367,17 @@ extension ClientInfoViewController: UITextFieldDelegate {
     // Allow editing in place
     func fieldDidChange(_ textField: UITextField) {
         if let name = textField.placeholder, let cell = textField.superview?.superview as? UITableViewCell,
-            let indexPath = tableView.indexPath(for: cell),
-            let category = client.categories!.object(at: indexPath.section - 2) as? Category,
-            let text = textField.text {
+           let indexPath = tableView.indexPath(for: cell),
+           let category = client.categories!.object(at: indexPath.section - 2) as? Category,
+           let text = textField.text {
             if indexPath.row > 0 {
                 let payment = category.payments!.object(at: indexPath.row - 1) as! Payment
                 if name == "Name" {
                     payment.name = text
-                }
-                else if let value = text.rawDouble {
+                } else if let value = text.rawDouble {
                     payment.value = value
                 }
-            }
-            else {
+            } else {
                 if let value = text.rawDouble {
                     category.total = value
                 }
@@ -401,19 +385,19 @@ extension ClientInfoViewController: UITextFieldDelegate {
             dataContext.saveChanges()
         }
     }
-    
+
     // Setup reponse
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return false
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let money = textField.text?.rawDouble {
             textField.text = money.currency
         }
     }
-    
+
     /*func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
      return range.length < 1 || range.location + range.length > 1
      }*/
@@ -431,7 +415,7 @@ extension ClientInfoViewController: CNContactPickerDelegate {
             print("Can't load contact")
         }
     }
-    
+
     func showContactsPicker() {
         let contactPicker = CNContactPickerViewController()
         contactPicker.delegate = self;
@@ -448,13 +432,13 @@ extension ClientInfoViewController: CNContactViewControllerDelegate {
         client.firstName = contactSelected.givenName
         client.lastName = contactSelected.familyName
         dataContext.saveChanges()
-        
+
         navigationItem.title = "\(contactSelected.givenName) \(contactSelected.familyName)"
     }
 }
 
 extension Double {
-    var currency:String {
+    var currency: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         return formatter.string(from: NSNumber(value: self))!
@@ -462,7 +446,7 @@ extension Double {
 }
 
 extension String {
-    var rawDouble:Double? {
+    var rawDouble: Double? {
         var raw = self.replacingOccurrences(of: "$", with: "")
         raw = raw.replacingOccurrences(of: ",", with: "")
         return Double(raw)
