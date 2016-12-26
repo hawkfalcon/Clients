@@ -7,6 +7,10 @@ class SettingsViewController: UITableViewController {
 
     @IBOutlet weak var defaultPaymentName: UITextField!
     @IBOutlet weak var defaultPaymentType: UITextField!
+    
+    @IBOutlet weak var firstCategory: UITextField!
+    @IBOutlet weak var secondCategory: UITextField!
+    @IBOutlet weak var thirdCategory: UITextField!
 
     let colors: [UIColor] = [.flatWhite, .flatGray, .flatBlack,
                              .flatRed, .flatOrange, .flatYellow,
@@ -27,6 +31,11 @@ class SettingsViewController: UITableViewController {
         defaultPaymentType.text = Settings.defaultPaymentType
 
         includeMileage.isOn = Settings.enabledMileage
+        
+        let categories = Settings.defaultCategories
+        firstCategory.text = categories[0]
+        secondCategory.text = categories[1]
+        thirdCategory.text = categories[2]
     }
 
     @IBAction func switchToggle(_ sender: UISwitch) {

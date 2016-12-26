@@ -703,7 +703,10 @@
                         <outlet property="colorView" destination="rao-6P-a2e" id="Ttj-pN-bsP"/>
                         <outlet property="defaultPaymentName" destination="ymd-Df-yzg" id="Fwh-oT-EnL"/>
                         <outlet property="defaultPaymentType" destination="ZnK-v3-8zh" id="jEb-Ah-teK"/>
+                        <outlet property="firstCategory" destination="4IJ-cD-ank" id="2X3-1F-i5E"/>
                         <outlet property="includeMileage" destination="GbH-2h-8Ww" id="i6q-jS-KYF"/>
+                        <outlet property="secondCategory" destination="x6D-3e-rNh" id="ggn-QG-pOt"/>
+                        <outlet property="thirdCategory" destination="fa8-Ir-T2R" id="eod-vR-m3K"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLx-eK-Ac5" userLabel="First Responder" sceneMemberID="firstResponder"/>
