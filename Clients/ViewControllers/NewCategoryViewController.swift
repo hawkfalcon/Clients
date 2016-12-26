@@ -10,7 +10,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
     var name: String = ""
     var total: Double = 0.0
     
-    let defaults = ["Contract", "Consultation", "Time and Materials", "Custom"]
+    var defaults: [String]!
     let sections = ["Total Amount", "Category Name"]
     
     // Initialize
@@ -21,6 +21,8 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        defaults = Settings.defaultCategories
     }
     
     // Setup reponse
@@ -29,6 +31,12 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
         return false
     }
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let money = textField.text?.rawDouble {
+            textField.text = money.currency
+        }
+    }
+
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         tableView.endEditing(true)
     }
@@ -73,6 +81,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
             cell.selectionStyle = .none
             cell.textField.keyboardType = .decimalPad
             cell.textField.placeholder = "0.0"
+            cell.textField.text = 0.0.currency
         default:
             text = defaults[indexPath.row]
             if text == defaults[0] {
@@ -111,7 +120,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
     // Populate client
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         let totalCell = tableView.cellForRow(at: tableView.indexPathsForVisibleRows![0]) as! TextInputTableViewCell
-        if let totalField = Double(totalCell.textField.text!) {
+        if let totalField = totalCell.textField.text!.rawDouble {
             total = totalField
         }
         if let selected = tableView.indexPathForSelectedRow, let cell = tableView.cellForRow(at: selected) as? TextInputTableViewCell,

@@ -8,6 +8,7 @@ class Settings {
     private static let enabledMileageKey = "enabledMileage"
     private static let defaultPaymentNameKey = "defaultPaymentName"
     private static let defaultPaymentTypeKey = "defaultPaymentType"
+    private static let defaultCategoriesKey = "defaultCategories"
     
     static var enabledMileage: Bool {
         get {
@@ -36,6 +37,21 @@ class Settings {
         }
     }
     
+    static var defaultCategories: [String] {
+        get {
+            return UserDefaults.standard.stringArray(forKey: defaultCategoriesKey)!
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: defaultCategoriesKey)
+        }
+    }
+    
+    static func updateDefaultCategories(index: Int, category: String) {
+        var defaults = defaultCategories
+        defaults[index] = category
+        defaultCategories = defaults
+    }
+    
     static var themeColor: UIColor {
         get {
             return UIColor(hexString: UserDefaults.standard.string(forKey: themeColorKey)!)!
@@ -61,6 +77,8 @@ class Settings {
             
             defaultPaymentName = "Down"
             defaultPaymentType = "Check"
+            
+            defaultCategories = ["Contract", "Consultation", "Time and Materials", "Custom"]
         }
     }
 }

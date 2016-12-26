@@ -35,11 +35,19 @@ class SettingsViewController: UITableViewController {
     
     @IBAction func fieldChanged(_ sender: UITextField) {
         if let name = sender.placeholder {
-            if name == "Name" {
+            switch name {
+            case "Name":
                 Settings.defaultPaymentName = sender.text!
-            }
-            if name == "Type" {
+            case "Type":
                 Settings.defaultPaymentType = sender.text!
+            case "First":
+                Settings.updateDefaultCategories(index: 0, category: sender.text!)
+            case "Second":
+                Settings.updateDefaultCategories(index: 1, category: sender.text!)
+            case "Third":
+                Settings.updateDefaultCategories(index: 2, category: sender.text!)
+            default:
+                return
             }
         }
     }
