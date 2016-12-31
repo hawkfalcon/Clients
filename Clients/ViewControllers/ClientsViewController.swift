@@ -52,10 +52,10 @@ class ClientsViewController: UITableViewController {
         let headerFrame = tableView.frame
 
         let view = UIView(frame: CGRect(x: 0, y: 0, width: headerFrame.size.width, height: headerFrame.size.height))
-        let left = UILabel(frame: CGRect(x: 15, y: 10, width: 300, height: 40))
+        let left = UILabel(frame: CGRect(x: 15, y: 0, width: 300, height: 40))
         let right = UILabel()
         if let navigationBar = self.navigationController?.navigationBar {
-            right.frame = CGRect(x: navigationBar.frame.width / 2 - 35, y: 10, width: navigationBar.frame.width / 2, height: navigationBar.frame.height)
+            right.frame = CGRect(x: navigationBar.frame.width / 2 - 35, y: 0, width: navigationBar.frame.width / 2, height: navigationBar.frame.height)
         }
         //left.font = UIFont.systemFontOfSize(14.0)
         left.backgroundColor = UIColor.clear
@@ -120,7 +120,7 @@ class ClientsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 45.0
+        return 35.0
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

@@ -12,6 +12,8 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
 
     var defaults: [String]!
     let sections = ["Total Amount", "Category Name"]
+    
+    var lastSelected: TextInputTableViewCell!
 
     // Initialize
     override func viewDidLoad() {
@@ -21,6 +23,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
 
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.allowsSelectionDuringEditing = true
 
         defaults = Settings.defaultCategories
     }
@@ -43,7 +46,10 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.placeholder! == "Payment Name" {
-            tableView.selectRow(at: tableView.indexPathsForVisibleRows![4], animated: true, scrollPosition: .bottom)
+            let indexPath = tableView.indexPathsForVisibleRows!.last!
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+            let cell = tableView.cellForRow(at: indexPath) as! TextInputTableViewCell
+            checkMark(indexPath: indexPath, cell: cell)
         }
     }
 
@@ -85,7 +91,8 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
         default:
             text = defaults[indexPath.row]
             if text == defaults[0] {
-                self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                cell.accessoryType = .checkmark
+                lastSelected = cell
             }
             if text != "Custom" {
                 cell.textField.isEnabled = false
@@ -102,34 +109,44 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         tableView.endEditing(true)
-        if indexPath.section != 0 {
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+        if indexPath.section == 0 {
+            return nil
         }
-        return nil
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+        return indexPath
     }
 
-    // Tapped on cell
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! TextInputTableViewCell
         if cell.textField != nil {
             cell.textField.becomeFirstResponder()
         }
+        checkMark(indexPath: indexPath, cell: cell)
     }
-
+    
+    func checkMark(indexPath: IndexPath, cell: UITableViewCell) {
+        if lastSelected == cell {
+            return
+        }
+        cell.accessoryType = .checkmark
+        lastSelected.accessoryType = .none
+        lastSelected = cell as! TextInputTableViewCell
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     // Populate client
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         let totalCell = tableView.cellForRow(at: tableView.indexPathsForVisibleRows![0]) as! TextInputTableViewCell
         if let totalField = totalCell.textField.text!.rawDouble {
             total = totalField
         }
-        if let selected = tableView.indexPathForSelectedRow, let cell = tableView.cellForRow(at: selected) as? TextInputTableViewCell,
-           let section = cell.textLabel?.text {
+        if let section = lastSelected.textLabel?.text {
             if section == "Custom" {
-                name = cell.textField.text!.capitalized
+                name = lastSelected.textField.text!.capitalized
             } else {
                 name = section
             }
+            print(name)
         }
-        print(name)
     }
 }

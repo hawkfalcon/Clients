@@ -13,22 +13,10 @@ class MileageTableViewController: UITableViewController {
         super.viewDidLoad()
     }
 
-    // Setup layout
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if mileage.count == 0 {
-            return 1
-        }
-        return mileage.count
-    }
-
     // Populate data
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MilesCell")! as UITableViewCell
-        if mileage.count == 0 {
+        if indexPath.row == client.mileage!.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewMileageCell", for: indexPath) as! NewPaymentTableViewCell
             cell.configure(type: "Mileage")
             return cell
@@ -42,6 +30,32 @@ class MileageTableViewController: UITableViewController {
         cell.detailTextLabel?.text = String(stringInterpolationSegment: miles!.miles)
         return cell
     }
+    
+    // MARK: - Header
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerFrame = tableView.frame
+        
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: headerFrame.size.width, height: headerFrame.size.height))
+        let left = UILabel(frame: CGRect(x: 15, y: 0, width: 300, height: 40))
+        let right = UILabel()
+        if let navigationBar = self.navigationController?.navigationBar {
+            right.frame = CGRect(x: navigationBar.frame.width / 2 - 15, y: 0, width: navigationBar.frame.width / 2, height: navigationBar.frame.height)
+        }
+
+        left.backgroundColor = UIColor.clear
+        left.textColor = Settings.themeColor
+        left.text = "Date"
+        
+        right.text = "Miles"
+        right.textColor = UIColor.gray
+        right.textAlignment = .right
+        right.backgroundColor = UIColor.clear
+        
+        view.addSubview(left)
+        view.addSubview(right)
+        
+        return view
+    }
 
     // Allow deletion
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -49,13 +63,33 @@ class MileageTableViewController: UITableViewController {
             tableView.beginUpdates()
             client.removeFromMileage(at: indexPath.row)
             dataContext.saveChanges()
-            if mileage.count == 0 {
-                tableView.reloadData()
-            } else {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
         }
+    }
+    
+    // Setup layout
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.row != client.mileage!.count
+    }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return mileage.count + 1
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55.0
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 35.0
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.01
     }
 
     // Tap
