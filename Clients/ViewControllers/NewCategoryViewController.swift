@@ -13,7 +13,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
     var defaults: [String]!
     let sections = ["Total Amount", "Category Name"]
     
-    var lastSelected: TextInputTableViewCell!
+    var lastSelected: TextInputCell!
 
     // Initialize
     override func viewDidLoad() {
@@ -48,7 +48,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
         if textField.placeholder! == "Payment Name" {
             let indexPath = tableView.indexPathsForVisibleRows!.last!
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
-            let cell = tableView.cellForRow(at: indexPath) as! TextInputTableViewCell
+            let cell = tableView.cellForRow(at: indexPath) as! TextInputCell
             checkMark(indexPath: indexPath, cell: cell)
         }
     }
@@ -77,7 +77,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
 
     // Populate data
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NewCell", for: indexPath) as! TextInputTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NewCell", for: indexPath) as! TextInputCell
 
         var text = ""
 
@@ -117,7 +117,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! TextInputTableViewCell
+        let cell = tableView.cellForRow(at: indexPath) as! TextInputCell
         if cell.textField != nil {
             cell.textField.becomeFirstResponder()
         }
@@ -130,13 +130,13 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
         }
         cell.accessoryType = .checkmark
         lastSelected.accessoryType = .none
-        lastSelected = cell as! TextInputTableViewCell
+        lastSelected = cell as! TextInputCell
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // Populate client
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
-        let totalCell = tableView.cellForRow(at: tableView.indexPathsForVisibleRows![0]) as! TextInputTableViewCell
+        let totalCell = tableView.cellForRow(at: tableView.indexPathsForVisibleRows![0]) as! TextInputCell
         if let totalField = totalCell.textField.text!.rawDouble {
             total = totalField
         }

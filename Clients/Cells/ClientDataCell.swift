@@ -1,6 +1,6 @@
 import UIKit
 
-public class ClientDataTableViewCell: UITableViewCell {
+public class ClientDataCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var paidLabel: UILabel!

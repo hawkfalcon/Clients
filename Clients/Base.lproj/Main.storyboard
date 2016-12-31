@@ -73,7 +73,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ClientCell" rowHeight="55" id="QYg-hU-cv1" customClass="ClientDataTableViewCell" customModule="Clients" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ClientCell" rowHeight="55" id="QYg-hU-cv1" customClass="ClientDataCell" customModule="Clients" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="112.5" width="375" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QYg-hU-cv1" id="K9c-hG-7q0">
@@ -179,7 +179,7 @@
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="separatorColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NewCell" focusStyle="custom" textLabel="5qb-ib-n3H" rowHeight="55" style="IBUITableViewCellStyleDefault" id="iDw-ll-pcy" customClass="TextInputTableViewCell" customModule="Clients" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NewCell" focusStyle="custom" textLabel="5qb-ib-n3H" rowHeight="55" style="IBUITableViewCellStyleDefault" id="iDw-ll-pcy" customClass="TextInputCell" customModule="Clients" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iDw-ll-pcy" id="Py2-Fn-Ooe">
@@ -275,7 +275,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NotesCell" textLabel="1zD-9C-twJ" detailTextLabel="K8q-0b-auy" rowHeight="55" style="IBUITableViewCellStyleValue1" id="Oaw-X8-5yB" userLabel="NotesCell" customClass="TextInputTableViewCell" customModule="Clients" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NotesCell" textLabel="1zD-9C-twJ" detailTextLabel="K8q-0b-auy" rowHeight="55" style="IBUITableViewCellStyleValue1" id="Oaw-X8-5yB" userLabel="NotesCell" customClass="TextInputCell" customModule="Clients" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="110.5" width="375" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Oaw-X8-5yB" id="KNw-Gf-6Fp">
@@ -308,7 +308,7 @@
                                     <outlet property="textField" destination="UtZ-t8-6XQ" id="eTu-5B-yiL"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PaymentCell" textLabel="loV-bp-7Ng" detailTextLabel="kOM-6C-Xjc" rowHeight="55" style="IBUITableViewCellStyleValue1" id="1Sg-jU-Ybl" userLabel="PaymentCell" customClass="PaymentDataTableViewCell" customModule="Clients" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PaymentCell" textLabel="loV-bp-7Ng" detailTextLabel="kOM-6C-Xjc" rowHeight="55" style="IBUITableViewCellStyleValue1" id="1Sg-jU-Ybl" userLabel="PaymentCell" customClass="PaymentDataCell" customModule="Clients" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="165.5" width="375" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Sg-jU-Ybl" id="I4c-qt-Hsj">
@@ -355,7 +355,7 @@
                                     <segue destination="65p-of-B43" kind="push" identifier="toPayment" id="CcA-Fz-nUx"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PaymentTotalCell" textLabel="1Rl-Oc-Hy1" detailTextLabel="15w-6P-msg" rowHeight="55" style="IBUITableViewCellStyleValue1" id="YuR-ph-Ax3" userLabel="PaymentTotalCell" customClass="PaymentDataTableViewCell" customModule="Clients" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PaymentTotalCell" textLabel="1Rl-Oc-Hy1" detailTextLabel="15w-6P-msg" rowHeight="55" style="IBUITableViewCellStyleValue1" id="YuR-ph-Ax3" userLabel="PaymentTotalCell" customClass="PaymentDataCell" customModule="Clients" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="220.5" width="375" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YuR-ph-Ax3" id="W3a-wv-Vz7">
@@ -401,7 +401,7 @@
                                     <outlet property="valueField" destination="L2s-QX-h6t" id="65p-Jb-TzG"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewPaymentCell" textLabel="iel-Ag-bY3" detailTextLabel="uR9-sc-Qsj" style="IBUITableViewCellStyleValue1" id="CrW-g8-kTY" customClass="NewPaymentTableViewCell" customModule="Clients" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewPaymentCell" textLabel="iel-Ag-bY3" detailTextLabel="uR9-sc-Qsj" style="IBUITableViewCellStyleValue1" id="CrW-g8-kTY" customClass="NewPaymentCell" customModule="Clients" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="275.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CrW-g8-kTY" id="FeV-wC-EqI">
@@ -764,7 +764,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NewMileageCell" textLabel="S95-L2-NdU" detailTextLabel="gXH-wq-yVI" rowHeight="55" style="IBUITableViewCellStyleValue1" id="pP5-SA-CxN" userLabel="NewMilesCell" customClass="NewPaymentTableViewCell" customModule="Clients" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NewMileageCell" textLabel="S95-L2-NdU" detailTextLabel="gXH-wq-yVI" rowHeight="55" style="IBUITableViewCellStyleValue1" id="pP5-SA-CxN" userLabel="NewMilesCell" customClass="NewPaymentCell" customModule="Clients" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="110.5" width="375" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pP5-SA-CxN" id="zDD-wH-Moe">
@@ -956,7 +956,7 @@
                         <sections>
                             <tableViewSection headerTitle="Payment" id="H8L-WF-nSf">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PaymentCell" textLabel="TDS-rz-i2r" detailTextLabel="xRs-S2-daC" rowHeight="55" style="IBUITableViewCellStyleValue1" id="mE4-hK-mWq" userLabel="PaymentCell" customClass="PaymentDataTableViewCell" customModule="Clients" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PaymentCell" textLabel="TDS-rz-i2r" detailTextLabel="xRs-S2-daC" rowHeight="55" style="IBUITableViewCellStyleValue1" id="mE4-hK-mWq" userLabel="PaymentCell" customClass="PaymentDataCell" customModule="Clients" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mE4-hK-mWq" id="fdt-pq-xqv">
@@ -1008,7 +1008,7 @@
                                             <outlet property="valueField" destination="3gd-uv-ecT" id="WTE-74-XRC"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PaymentCell" textLabel="JPL-Hw-T0D" detailTextLabel="Alx-bA-FZG" rowHeight="55" style="IBUITableViewCellStyleValue1" id="EJ2-o9-259" userLabel="TypeCell" customClass="PaymentDataTableViewCell" customModule="Clients" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PaymentCell" textLabel="JPL-Hw-T0D" detailTextLabel="Alx-bA-FZG" rowHeight="55" style="IBUITableViewCellStyleValue1" id="EJ2-o9-259" userLabel="TypeCell" customClass="PaymentDataCell" customModule="Clients" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="110.5" width="375" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EJ2-o9-259" id="iYb-MW-sVu">

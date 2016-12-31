@@ -1,6 +1,6 @@
 import UIKit
 
-public class NewPaymentTableViewCell: UITableViewCell {
+public class NewPaymentCell: UITableViewCell {
     func configure(type: String) {
         if tag == 1 {
             return

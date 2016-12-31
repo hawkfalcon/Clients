@@ -75,7 +75,7 @@ class ClientsViewController: UITableViewController {
 
     // MARK: - Populate data
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ClientCell", for: indexPath) as? ClientDataTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ClientCell", for: indexPath) as? ClientDataCell else {
             fatalError("Unexpected Cell")
         }
 
@@ -84,7 +84,7 @@ class ClientsViewController: UITableViewController {
         return cell
     }
 
-    func configure(_ cell: ClientDataTableViewCell, at indexPath: IndexPath) {
+    func configure(_ cell: ClientDataCell, at indexPath: IndexPath) {
         let client = dataController.object(at: indexPath)
 
         // Configure Cell
@@ -234,7 +234,7 @@ extension ClientsViewController: NSFetchedResultsControllerDelegate {
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
         case .update:
-            if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? ClientDataTableViewCell {
+            if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? ClientDataCell {
                 configure(cell, at: indexPath)
             }
         case .move:

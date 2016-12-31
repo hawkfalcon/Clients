@@ -1,6 +1,6 @@
 import UIKit
 
-public class PaymentDataTableViewCell: UITableViewCell {
+public class PaymentDataCell: UITableViewCell {
 
     @IBOutlet weak var paymentField: UITextField!
     @IBOutlet weak var valueField: UITextField!

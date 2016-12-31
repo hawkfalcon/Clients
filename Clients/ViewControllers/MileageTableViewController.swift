@@ -17,7 +17,7 @@ class MileageTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MilesCell")! as UITableViewCell
         if indexPath.row == client.mileage!.count {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "NewMileageCell", for: indexPath) as! NewPaymentTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NewMileageCell", for: indexPath) as! NewPaymentCell
             cell.configure(type: "Mileage")
             return cell
         }
@@ -95,7 +95,7 @@ class MileageTableViewController: UITableViewController {
     // Tap
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)! as UITableViewCell
-        if cell is NewPaymentTableViewCell {
+        if cell is NewPaymentCell {
             performSegue(withIdentifier: "milesSegue", sender: self)
         }
     }

@@ -70,7 +70,7 @@ class ClientInfoViewController: UITableViewController {
     }
     
     func createNotesCell(indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NotesCell", for: indexPath) as! TextInputTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NotesCell", for: indexPath) as! TextInputCell
         
         cell.textLabel?.text = "Notes"
         if let notes = client.notes {
@@ -91,7 +91,7 @@ class ClientInfoViewController: UITableViewController {
     func createPaymentCell(section: Int, indexPath: IndexPath) -> UITableViewCell {
         let last = tableView.numberOfRows(inSection: indexPath.section) - 1
         if indexPath.row == last {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "NewPaymentCell", for: indexPath) as! NewPaymentTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NewPaymentCell", for: indexPath) as! NewPaymentCell
             cell.configure(type: "Payment")
 
             return cell
@@ -99,7 +99,7 @@ class ClientInfoViewController: UITableViewController {
             let category = client.category(section: section)!
 
             let identifier = indexPath.row == 0 ? "PaymentTotalCell" : "PaymentCell"
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! PaymentDataTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! PaymentDataCell
 
             if indexPath.row == 0 {
                 configure(cell, for: category)
@@ -117,7 +117,7 @@ class ClientInfoViewController: UITableViewController {
         }
     }
 
-    func configure(_ cell: PaymentDataTableViewCell, for category: Category) {
+    func configure(_ cell: PaymentDataCell, for category: Category) {
         let leftLabel = UILabel()
         leftLabel.text = "Total: "
         leftLabel.textAlignment = .right
@@ -196,7 +196,7 @@ class ClientInfoViewController: UITableViewController {
             performSegue(withIdentifier: "toMiles", sender: nil)
         } else if let text = cell.textLabel?.text, text == "Add a Category +" {
             performSegue(withIdentifier: "addCategory", sender: nil)
-        } else if cell is NewPaymentTableViewCell {
+        } else if cell is NewPaymentCell {
             let category = client.category(section: indexPath.section)
             let payment = Payment(context: dataContext)
             payment.name = Settings.defaultPaymentName
@@ -210,7 +210,7 @@ class ClientInfoViewController: UITableViewController {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             self.performSegue(withIdentifier: "toPayment", sender: self)
         } else {
-            if let textCell = cell as? TextInputTableViewCell, textCell.textField != nil {
+            if let textCell = cell as? TextInputCell, textCell.textField != nil {
                 textCell.textField.becomeFirstResponder()
             }
         }
