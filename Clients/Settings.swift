@@ -78,7 +78,7 @@ class Settings {
             defaultPaymentName = "Down"
             defaultPaymentType = "Check"
 
-            defaultCategories = ["Contract", "Consultation", "Time and Materials", "Custom"]
+            defaultCategories = ["Contract", "Consultation", "Time and Materials"]
         }
     }
 }

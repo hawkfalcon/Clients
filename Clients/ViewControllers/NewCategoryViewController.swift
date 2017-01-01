@@ -26,6 +26,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
         tableView.allowsSelectionDuringEditing = true
 
         defaults = Settings.defaultCategories
+        defaults.append("Custom")
     }
 
     // Setup reponse
@@ -45,7 +46,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField.placeholder! == "Payment Name" {
+        if textField.placeholder! == "Category Name" {
             let indexPath = tableView.indexPathsForVisibleRows!.last!
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
             let cell = tableView.cellForRow(at: indexPath) as! TextInputCell
@@ -97,7 +98,7 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
             if text != "Custom" {
                 cell.textField.isEnabled = false
             } else {
-                cell.textField.placeholder = "Payment Name"
+                cell.textField.placeholder = "Category Name"
             }
         }
 

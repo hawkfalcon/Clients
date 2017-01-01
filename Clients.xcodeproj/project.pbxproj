@@ -16,7 +16,7 @@
 		545182C11CA7484500DF345A /* NewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545182C01CA7484500DF345A /* NewCategoryViewController.swift */; };
 		546B9EC61CBB0514001004F5 /* PaymentInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546B9EC51CBB0514001004F5 /* PaymentInfoViewController.swift */; };
 		547A8A691AC4E5F400CC4DB6 /* ClientsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A8A681AC4E5F400CC4DB6 /* ClientsViewController.swift */; };
-		547DB8491E186CA1008FDDC8 /* SettingsToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547DB8481E186CA1008FDDC8 /* SettingsToggleCell.swift */; };
+		547DB8491E186CA1008FDDC8 /* SettingsCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547DB8481E186CA1008FDDC8 /* SettingsCollectionCell.swift */; };
 		54A956911CBB27490030E010 /* ClientDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A956901CBB27490030E010 /* ClientDataCell.swift */; };
 		54C2A2661B45BDD600271412 /* MileageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C2A2651B45BDD600271412 /* MileageTableViewController.swift */; };
 		54C2A2681B45C33800271412 /* NewMileageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C2A2671B45C33800271412 /* NewMileageViewController.swift */; };
@@ -52,7 +52,7 @@
 		545182C01CA7484500DF345A /* NewCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
 		546B9EC51CBB0514001004F5 /* PaymentInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentInfoViewController.swift; sourceTree = "<group>"; };
 		547A8A681AC4E5F400CC4DB6 /* ClientsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientsViewController.swift; sourceTree = "<group>"; };
-		547DB8481E186CA1008FDDC8 /* SettingsToggleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsToggleCell.swift; sourceTree = "<group>"; };
+		547DB8481E186CA1008FDDC8 /* SettingsCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCollectionCell.swift; sourceTree = "<group>"; };
 		54A956901CBB27490030E010 /* ClientDataCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClientDataCell.swift; path = Cells/ClientDataCell.swift; sourceTree = "<group>"; };
 		54B3418C1C2F75440025D151 /* Clients.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Clients.entitlements; sourceTree = "<group>"; };
 		54C2A2651B45BDD600271412 /* MileageTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MileageTableViewController.swift; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 				54007E951CA8E32A007B3DA2 /* NewPaymentCell.swift */,
 				54007E931CA8DC8A007B3DA2 /* PaymentDataCell.swift */,
 				54A956901CBB27490030E010 /* ClientDataCell.swift */,
-				547DB8481E186CA1008FDDC8 /* SettingsToggleCell.swift */,
+				547DB8481E186CA1008FDDC8 /* SettingsCollectionCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -346,7 +346,7 @@
 				546B9EC61CBB0514001004F5 /* PaymentInfoViewController.swift in Sources */,
 				54A956911CBB27490030E010 /* ClientDataCell.swift in Sources */,
 				54007E941CA8DC8A007B3DA2 /* PaymentDataCell.swift in Sources */,
-				547DB8491E186CA1008FDDC8 /* SettingsToggleCell.swift in Sources */,
+				547DB8491E186CA1008FDDC8 /* SettingsCollectionCell.swift in Sources */,
 				54007E961CA8E32A007B3DA2 /* NewPaymentCell.swift in Sources */,
 				54C2A2681B45C33800271412 /* NewMileageViewController.swift in Sources */,
 				5447B19A1AC7426400A5C48B /* ClientInfoViewController.swift in Sources */,
