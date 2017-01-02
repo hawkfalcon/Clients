@@ -6,7 +6,7 @@ class Settings {
 
     private static let themeColorKey = "themeColor"
     private static let enabledMileageKey = "enabledMileage"
-    private static let defaultPaymentNameKey = "defaultPaymentName"
+    private static let defaultPaymentNamesKey = "defaultPaymentNames"
     private static let defaultPaymentTypeKey = "defaultPaymentType"
     private static let defaultCategoriesKey = "defaultCategories"
 
@@ -19,14 +19,21 @@ class Settings {
         }
     }
 
-    static var defaultPaymentName: String {
+    static var defaultPaymentNames: [String] {
         get {
-            return UserDefaults.standard.string(forKey: defaultPaymentNameKey)!
+            return UserDefaults.standard.stringArray(forKey: defaultPaymentNamesKey)!
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: defaultPaymentNameKey)
+            UserDefaults.standard.set(newValue, forKey: defaultPaymentNamesKey)
         }
     }
+    
+    static func updateDefaultPaymentNames(index: Int, paymentName: String) {
+        var defaults = defaultPaymentNames
+        defaults[index] = paymentName
+        defaultPaymentNames = defaults
+    }
+
 
     static var defaultPaymentType: String {
         get {
@@ -69,15 +76,15 @@ class Settings {
 
     static func firstRun() {
         let launchKey = "previouslyLaunched"
-        if !UserDefaults.standard.bool(forKey: launchKey) {
+        if !UserDefaults.standard.bool(forKey: launchKey) || UserDefaults.standard.object(forKey: defaultPaymentNamesKey) == nil {
             UserDefaults.standard.set(true, forKey: launchKey)
 
             enabledMileage = true
             themeColor = .flatOrange
 
-            defaultPaymentName = "Down"
             defaultPaymentType = "Check"
 
+            defaultPaymentNames = ["Down", "Intermediate", "Final"]
             defaultCategories = ["Contract", "Consultation", "Time and Materials"]
         }
     }

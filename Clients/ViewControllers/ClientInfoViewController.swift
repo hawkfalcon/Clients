@@ -199,7 +199,7 @@ class ClientInfoViewController: UITableViewController {
         } else if cell is NewPaymentCell {
             let category = client.category(section: indexPath.section)
             let payment = Payment(context: dataContext)
-            payment.name = Settings.defaultPaymentName
+            payment.name = Settings.defaultPaymentNames[0]
             payment.type = Settings.defaultPaymentType
             payment.value = 0.0
             payment.date = NSDate()

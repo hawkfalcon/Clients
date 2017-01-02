@@ -7,17 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		54007E941CA8DC8A007B3DA2 /* PaymentDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54007E931CA8DC8A007B3DA2 /* PaymentDataCell.swift */; };
 		54007E961CA8E32A007B3DA2 /* NewPaymentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54007E951CA8E32A007B3DA2 /* NewPaymentCell.swift */; };
 		542B19291C2A2F1F00A64089 /* TextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542B19281C2A2F1F00A64089 /* TextInputCell.swift */; };
 		5447096A1E0DCCBF005E0B8F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544709691E0DCCBF005E0B8F /* SettingsViewController.swift */; };
 		5447096C1E0DD56E005E0B8F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5447096B1E0DD56E005E0B8F /* Settings.swift */; };
 		5447B19A1AC7426400A5C48B /* ClientInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5447B1991AC7426400A5C48B /* ClientInfoViewController.swift */; };
+		544990261E19BECA00CF8EEF /* DatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544990251E19BECA00CF8EEF /* DatePickerCell.swift */; };
 		545182C11CA7484500DF345A /* NewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545182C01CA7484500DF345A /* NewCategoryViewController.swift */; };
 		546B9EC61CBB0514001004F5 /* PaymentInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546B9EC51CBB0514001004F5 /* PaymentInfoViewController.swift */; };
 		547A8A691AC4E5F400CC4DB6 /* ClientsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A8A681AC4E5F400CC4DB6 /* ClientsViewController.swift */; };
 		547DB8491E186CA1008FDDC8 /* SettingsCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547DB8481E186CA1008FDDC8 /* SettingsCollectionCell.swift */; };
 		54A956911CBB27490030E010 /* ClientDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A956901CBB27490030E010 /* ClientDataCell.swift */; };
+		54C1867F1E19C34D009E07E5 /* PaymentDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C1867E1E19C34D009E07E5 /* PaymentDataCell.swift */; };
 		54C2A2661B45BDD600271412 /* MileageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C2A2651B45BDD600271412 /* MileageTableViewController.swift */; };
 		54C2A2681B45C33800271412 /* NewMileageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C2A2671B45C33800271412 /* NewMileageViewController.swift */; };
 		54DE51D81B45EA72008A2570 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54DE51D61B45EA72008A2570 /* Main.storyboard */; };
@@ -43,18 +44,19 @@
 /* Begin PBXFileReference section */
 		0A3B066A5EB7401D33A39D58 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F239145ED8EAF74B1845444 /* Pods-Clients.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clients.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Clients/Pods-Clients.debug.xcconfig"; sourceTree = "<group>"; };
-		54007E931CA8DC8A007B3DA2 /* PaymentDataCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentDataCell.swift; path = Cells/PaymentDataCell.swift; sourceTree = "<group>"; };
 		54007E951CA8E32A007B3DA2 /* NewPaymentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewPaymentCell.swift; path = Cells/NewPaymentCell.swift; sourceTree = "<group>"; };
 		542B19281C2A2F1F00A64089 /* TextInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextInputCell.swift; path = Cells/TextInputCell.swift; sourceTree = "<group>"; };
 		544709691E0DCCBF005E0B8F /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		5447096B1E0DD56E005E0B8F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		5447B1991AC7426400A5C48B /* ClientInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientInfoViewController.swift; sourceTree = "<group>"; };
+		544990251E19BECA00CF8EEF /* DatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerCell.swift; path = Cells/DatePickerCell.swift; sourceTree = "<group>"; };
 		545182C01CA7484500DF345A /* NewCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
 		546B9EC51CBB0514001004F5 /* PaymentInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentInfoViewController.swift; sourceTree = "<group>"; };
 		547A8A681AC4E5F400CC4DB6 /* ClientsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientsViewController.swift; sourceTree = "<group>"; };
-		547DB8481E186CA1008FDDC8 /* SettingsCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCollectionCell.swift; sourceTree = "<group>"; };
+		547DB8481E186CA1008FDDC8 /* SettingsCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsCollectionCell.swift; path = Cells/SettingsCollectionCell.swift; sourceTree = "<group>"; };
 		54A956901CBB27490030E010 /* ClientDataCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClientDataCell.swift; path = Cells/ClientDataCell.swift; sourceTree = "<group>"; };
 		54B3418C1C2F75440025D151 /* Clients.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Clients.entitlements; sourceTree = "<group>"; };
+		54C1867E1E19C34D009E07E5 /* PaymentDataCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaymentDataCell.swift; path = Cells/PaymentDataCell.swift; sourceTree = "<group>"; };
 		54C2A2651B45BDD600271412 /* MileageTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MileageTableViewController.swift; sourceTree = "<group>"; };
 		54C2A2671B45C33800271412 /* NewMileageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMileageViewController.swift; sourceTree = "<group>"; };
 		54DE51D71B45EA72008A2570 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -105,9 +107,10 @@
 			children = (
 				542B19281C2A2F1F00A64089 /* TextInputCell.swift */,
 				54007E951CA8E32A007B3DA2 /* NewPaymentCell.swift */,
-				54007E931CA8DC8A007B3DA2 /* PaymentDataCell.swift */,
 				54A956901CBB27490030E010 /* ClientDataCell.swift */,
 				547DB8481E186CA1008FDDC8 /* SettingsCollectionCell.swift */,
+				544990251E19BECA00CF8EEF /* DatePickerCell.swift */,
+				54C1867E1E19C34D009E07E5 /* PaymentDataCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -345,12 +348,13 @@
 				54EF3E9D1E0CD562005B0970 /* Clients.xcdatamodeld in Sources */,
 				546B9EC61CBB0514001004F5 /* PaymentInfoViewController.swift in Sources */,
 				54A956911CBB27490030E010 /* ClientDataCell.swift in Sources */,
-				54007E941CA8DC8A007B3DA2 /* PaymentDataCell.swift in Sources */,
 				547DB8491E186CA1008FDDC8 /* SettingsCollectionCell.swift in Sources */,
+				54C1867F1E19C34D009E07E5 /* PaymentDataCell.swift in Sources */,
 				54007E961CA8E32A007B3DA2 /* NewPaymentCell.swift in Sources */,
 				54C2A2681B45C33800271412 /* NewMileageViewController.swift in Sources */,
 				5447B19A1AC7426400A5C48B /* ClientInfoViewController.swift in Sources */,
 				5447096C1E0DD56E005E0B8F /* Settings.swift in Sources */,
+				544990261E19BECA00CF8EEF /* DatePickerCell.swift in Sources */,
 				5447096A1E0DCCBF005E0B8F /* SettingsViewController.swift in Sources */,
 				545182C11CA7484500DF345A /* NewCategoryViewController.swift in Sources */,
 				54F605CD1C2F4E3C00CB0A49 /* FileCreator.swift in Sources */,

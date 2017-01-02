@@ -73,6 +73,9 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section != 0 {
+            return 40.0
+        }
         return 55.0
     }
 
@@ -126,13 +129,13 @@ class NewCategoryViewController: UITableViewController, UITextFieldDelegate, CNC
     }
     
     func checkMark(indexPath: IndexPath, cell: UITableViewCell) {
+        tableView.deselectRow(at: indexPath, animated: true)
         if lastSelected == cell {
             return
         }
         cell.accessoryType = .checkmark
         lastSelected.accessoryType = .none
         lastSelected = cell as! TextInputCell
-        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // Populate client

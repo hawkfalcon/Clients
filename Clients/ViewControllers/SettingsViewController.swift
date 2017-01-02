@@ -3,7 +3,7 @@ import ChameleonFramework
 
 class SettingsViewController: UITableViewController {
     
-    let sections = ["Content", "Appearance", "Default Categories"]
+    let sections = ["Content", "Appearance", "Default Categories", "Default Payment Names", "Default Payment Type"]
 
     let colors: [UIColor] = [.flatRedDark, .flatOrange, .flatYellow,
                              .flatGreenDark, .flatForestGreenDark, .flatSkyBlueDark,
@@ -13,9 +13,6 @@ class SettingsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        /*defaultPaymentName.text = Settings.defaultPaymentName
-        defaultPaymentType.text = Settings.defaultPaymentType*/
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -27,15 +24,28 @@ class SettingsViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "collectionCell", for: indexPath) as! SettingsCollectionCell
             cell.addTargets(viewController: self)
             return cell
+        case "Default Payment Type":
+            let cell = tableView.dequeueReusableCell(withIdentifier: "textCell", for: indexPath) as! TextInputCell
+            cell.configure(text: Settings.defaultPaymentType, placeholder: "Payment Type")
+            cell.textLabel?.text = "Payment Type"
+            return cell
         default:
-            if indexPath.row == Settings.defaultCategories.count {
+            if indexPath.row == Settings.defaultCategories.count && section == "Default Categories" {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "newCell", for: indexPath) as! NewPaymentCell
                 cell.configure(type: "Category")
-                
+                return cell
+            }
+            if indexPath.row == Settings.defaultPaymentNames.count && section == "Default Payment Names" {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "newCell", for: indexPath) as! NewPaymentCell
+                cell.configure(type: "Payment")
                 return cell
             }
             let cell = tableView.dequeueReusableCell(withIdentifier: "inputCell", for: indexPath) as! TextInputCell
-            cell.configure(text: Settings.defaultCategories[indexPath.row], placeholder: "Category")
+            if section == "Default Categories" {
+                cell.configure(text: Settings.defaultCategories[indexPath.row], placeholder: "Category")
+            } else {
+                cell.configure(text: Settings.defaultPaymentNames[indexPath.row], placeholder: "Payment Name")
+            }
             cell.textField.tag = indexPath.row
             
             return cell
@@ -67,7 +77,11 @@ class SettingsViewController: UITableViewController {
         let cell = tableView.cellForRow(at: indexPath)! as UITableViewCell
         if cell is NewPaymentCell {
             tableView.beginUpdates()
-            Settings.defaultCategories.insert("Category", at: indexPath.row)
+            if sections[indexPath.section] == "Default Categories" {
+                Settings.defaultCategories.insert("Category", at: indexPath.row)
+            } else {
+                Settings.defaultPaymentNames.insert("Payment Name", at: indexPath.row)
+            }
             tableView.insertRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
         }
@@ -75,13 +89,19 @@ class SettingsViewController: UITableViewController {
     
     // Allow deletion
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return sections[indexPath.section].contains("Default") && (indexPath.row != Settings.defaultCategories.count)
+        return sections[indexPath.section].contains("Default") &&
+            (indexPath.row != Settings.defaultCategories.count) &&
+            (indexPath.row != Settings.defaultPaymentNames.count)
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             tableView.beginUpdates()
-            Settings.defaultCategories.remove(at: indexPath.row)
+            if sections[indexPath.section] == "Default Categories" {
+                Settings.defaultCategories.remove(at: indexPath.row)
+            } else {
+                Settings.defaultPaymentNames.remove(at: indexPath.row)
+            }
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
         }
@@ -98,10 +118,26 @@ class SettingsViewController: UITableViewController {
             if indexPath.row == Settings.defaultCategories.count {
                 return 55.0
             }
-            return 35.0
+            return 40.0
+        case "Default Payment Names":
+            if indexPath.row == Settings.defaultPaymentNames.count {
+                return 55.0
+            }
+            return 40.0
         default:
             return 55.0
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 18.0;
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 36.0
+        }
+        return 18.0;
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -117,6 +153,9 @@ class SettingsViewController: UITableViewController {
         if sections[section] == "Default Categories" {
             return Settings.defaultCategories.count + 1
         }
+        if sections[section] == "Default Payment Names" {
+            return Settings.defaultPaymentNames.count + 1
+        }
         return 1
     }
 
@@ -125,7 +164,9 @@ class SettingsViewController: UITableViewController {
             switch name {
             case "Category":
                 Settings.updateDefaultCategories(index: sender.tag, category: sender.text!)
-            case "Type":
+            case "Payment Name":
+                Settings.updateDefaultPaymentNames(index: sender.tag, paymentName: sender.text!)
+            case "Payment Type":
                 Settings.defaultPaymentType = sender.text!
             default:
                 return
